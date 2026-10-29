@@ -1,2 +1,2 @@
-# learn_spring_mvc_boot_cloud_securety_maven_mybatis
+# learn_spring_mvc_boot_cloud_security_maven_mybatis
 学习Spring相关的内容如mvc,springboot,spring cloud,mybatis,maven等等
