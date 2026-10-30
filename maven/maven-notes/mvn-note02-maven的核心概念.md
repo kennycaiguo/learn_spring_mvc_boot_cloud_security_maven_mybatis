@@ -112,8 +112,8 @@ maven_project
             |--------main
                        |------java
                        |------resources
-            |--------test
-                       |------java
+            |--------test  
+                       |------java //在这里写单元测试代码
                        |------resources
      |-----pom.xml
 ```
@@ -203,7 +203,7 @@ Maven 提供三个核心生命周期，每个生命周期包含多个阶段：
 
 | **生命周期** | **用途**                                      | **关键阶段（顺序执行）**                                     |
 | ------------ | --------------------------------------------- | ------------------------------------------------------------ |
-| `default`    | 项目构建和部署的完整过程                      | `validate` → `compile` → `test` → `package` → `verify` → `install` → `deploy`<br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">validate</font></code><font style="color:rgb(15, 17, 21);">： 看看这个项目的“身份证”（基本信息）全不全，配置对不对。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">compile</font></code><font style="color:rgb(15, 17, 21);">： 编译项目的源代码。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">test</font></code><font style="color:rgb(15, 17, 21);">： 执行程序员编写的所有单元测试。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">package</font></code><font style="color:rgb(15, 17, 21);">： 将编译后的代码打包，如 JAR、WAR。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">verify</font></code><font style="color:rgb(15, 17, 21);">： 对打包后的内容进行全面检查。确保质量没问题。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">install</font></code><font style="color:rgb(15, 17, 21);">： 将打包好的构件安装到</font>**<font style="color:rgb(15, 17, 21);">本地仓库</font>**<font style="color:rgb(15, 17, 21);">，这样就可以作为其他本地项目的依赖了。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">deploy</font></code><font style="color:rgb(15, 17, 21);">： 将最终的构件复制到</font>**<font style="color:rgb(15, 17, 21);">私服（如果你们搭建了私服的话）</font>**<font style="color:rgb(15, 17, 21);">，和其他开发者共享。</font><br/>**<font style="color:#DF2A3F;">注意：某阶段执行时，前面所有的阶段会全部执行一遍。</font>** |
+| `default`    | 项目构建和部署的完整过程                      | `validate` → `compile` → `test` → `package` → `verify` → `install` → `deploy`<br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">validate</font></code><font style="color:rgb(15, 17, 21);">： 看看这个项目的“身份证”（基本信息）全不全，配置对不对。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">compile</font></code><font style="color:rgb(15, 17, 21);">： 编译项目的源代码。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">test</font></code><font style="color:rgb(15, 17, 21);">： 执行程序员编写的所有单元测试。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">package</font></code><font style="color:rgb(15, 17, 21);">： 将编译后的代码打包，如 JAR、WAR。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">verify</font></code><font style="color:rgb(15, 17, 21);">： 对打包后的内容进行全面检查。确保质量没问题。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">install</font></code><font style="color:rgb(15, 17, 21);">： 将打包好的构件安装到</font>**<font style="color:rgb(15, 17, 21);">本地仓库</font>**<font style="color:rgb(15, 17, 21);">，这样就可以作为其他本地项目的依赖了。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">deploy</font></code><font style="color:rgb(15, 17, 21);">： 将最终的构件复制到</font>**<font style="color:rgb(15, 17, 21);">私服（如果你们搭建了私服的话）</font>**<font style="color:rgb(15, 17, 21);">，和其他开发者共享，如果没有安装私服，运行该命令会报错。</font><br/>**<font style="color:#DF2A3F;">注意：某阶段执行时，前面所有的阶段会全部执行一遍。</font>** |
 | `clean`      | 清理构建产物                                  | `pre-clean` → `clean` → `post-clean`<br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">pre-clean</font></code><font style="color:rgb(15, 17, 21);">：</font><font style="color:rgb(15, 17, 21);"> </font>**<font style="color:rgb(15, 17, 21);">大扫除之前</font>**<font style="color:rgb(15, 17, 21);">的准备工作。（很少用，比如发个通知说“我要开始删了！”）</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">clean</font></code><font style="color:rgb(15, 17, 21);">：</font><font style="color:rgb(15, 17, 21);"> </font>**<font style="color:rgb(15, 17, 21);">核心阶段</font>**<font style="color:rgb(15, 17, 21);">，就是</font>**<font style="color:rgb(15, 17, 21);">动手删除</font>\*\*\*\*<font style="color:rgb(15, 17, 21);"> </font>**<code>**<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">target</font>**</code>**<font style="color:rgb(15, 17, 21);"> </font>\*\*\*\*<font style="color:rgb(15, 17, 21);">文件夹</font>**<font style="color:rgb(15, 17, 21);">。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">post-clean</font></code><font style="color:rgb(15, 17, 21);">： </font>**<font style="color:rgb(15, 17, 21);">大扫除之后</font>**<font style="color:rgb(15, 17, 21);">的收尾工作。（很少用，比如记录一下“我删完了”）</font> |
 | `site`       | 生成文档和报告（本质上就是执行 javadoc 命令） | `pre-site` → `site` → `post-site` → `site-deploy`<br/>site 就是给你的项目自动创建一个“产品说明书网站”。<br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">pre-site</font></code><font style="color:rgb(15, 17, 21);">：</font><font style="color:rgb(15, 17, 21);"> </font>**<font style="color:rgb(15, 17, 21);">建网站之前</font>**<font style="color:rgb(15, 17, 21);">的准备工作。（很少用）</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">site</font></code><font style="color:rgb(15, 17, 21);">：</font><font style="color:rgb(15, 17, 21);"> </font>**<font style="color:rgb(15, 17, 21);">核心阶段</font>**<font style="color:rgb(15, 17, 21);">，就是</font>**<font style="color:rgb(15, 17, 21);">动手生成那个“说明书网站”</font>**<font style="color:rgb(15, 17, 21);">。生成的文件都在</font><font style="color:rgb(15, 17, 21);"> </font><code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">target/site</font></code><font style="color:rgb(15, 17, 21);"> </font><font style="color:rgb(15, 17, 21);">文件夹里。你可以直接用浏览器打开</font><font style="color:rgb(15, 17, 21);"> </font><code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">target/site/index.html</font></code><font style="color:rgb(15, 17, 21);"> </font><font style="color:rgb(15, 17, 21);">来查看。</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">post-site</font></code><font style="color:rgb(15, 17, 21);">：</font><font style="color:rgb(15, 17, 21);"> </font>**<font style="color:rgb(15, 17, 21);">建网站之后</font>**<font style="color:rgb(15, 17, 21);">的收尾工作。（很少用）</font><br/>+ <code><font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">site-deploy</font></code><font style="color:rgb(15, 17, 21);">： </font>**<font style="color:rgb(15, 17, 21);">把网站发布上网</font>**<font style="color:rgb(15, 17, 21);">，把这个“说明书网站”上传到一台服务器上，这样大家通过一个网址就能访问了，不用每个人自己本地生成。</font><br/><font style="color:rgb(15, 17, 21);">在 pom.xml 文件中配置这个</font><br/><font style="color:rgb(15, 17, 21);">  <distributionManagement></font><br/><font style="color:rgb(15, 17, 21);">    <!-- 配置站点部署的服务器地址 --></font><br/><font style="color:rgb(15, 17, 21);">    <site></font><br/><font style="color:rgb(15, 17, 21);">      <id>my-website-server</id></font><br/><font style="color:rgb(15, 17, 21);">      <url>scp://webhost.mycompany.com/www/docs/myproject/</url></font><br/><font style="color:rgb(15, 17, 21);">    </site></font><br/><font style="color:rgb(15, 17, 21);">  </distributionManagement></font> |
 
@@ -286,3 +286,102 @@ Maven 为核心阶段预绑定了常用插件。例如：
 ## 7.测试本地仓库是否配置成功，输入命令：mvn help:effective-settings，此时maven就好下载一下apache提供的jar包到本地仓库，我们打开这个仓库，如果有内容，说明本地仓库配置成功
 
 ![image-20261029175155145](./mvn-note02-maven的核心概念.assets/image-20261029175155145.png)
+
+# 演练2.maven命令的使用，手动创建项目
+
+## 2.1手动创建一个maven-project1项目，在里面新建一个src文件夹和一个pom.xml文件
+
+![image-20261029195417017](./mvn-note02-maven的核心概念.assets/image-20261029195417017.png)
+
+## 2.2 在src文件夹里面新建一个main文件夹和一个test文件夹
+
+![image-20261029195536802](./mvn-note02-maven的核心概念.assets/image-20261029195536802.png)
+
+## 2.3 然后在main文件夹里面新建一个java文件夹和一个resources文件夹
+
+![image-20261029195707805](./mvn-note02-maven的核心概念.assets/image-20261029195707805.png)
+
+## 2.4 在test文件夹里面也新建一个java文件夹和一个resources文件夹
+
+![image-20261029195941432](./mvn-note02-maven的核心概念.assets/image-20261029195941432.png)
+
+## 2.5 在maven-project1\src\main\java里面新建一个org文件夹，然后在里面新建一个kenny
+
+![image-20261029200341877](./mvn-note02-maven的核心概念.assets/image-20261029200341877.png)
+
+## 2.6在kenny文件夹里面新建一个maven文件夹，在里面新建一个HelloMaven.java文件
+
+![image-20261029201017520](./mvn-note02-maven的核心概念.assets/image-20261029201017520.png)
+
+内容如下：
+
+```
+package org.kenny.maven;
+
+public class HelloMaven {
+    public static void main(String[] args){
+          System.out.println("Hello Maven!!!");
+    }
+}
+```
+
+## 2.7 然后我们返回到maven-project1文件夹里面
+
+![image-20261029201328500](./mvn-note02-maven的核心概念.assets/image-20261029201328500.png)
+
+## 2.8 编辑pom.xml文件，内容如下
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://apache.org"
+         xmlns:xsi="http://w3.org"
+         xsi:schemaLocation="http://apache.org https://apache.org">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--  你的项目坐标 -->
+    <groupId>org.kenny</groupId>
+    <artifactId>maven-project1</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+</project>
+
+```
+
+## 2.9打开一个cmd窗口定位到项目根目录里面，输出mvn compile,然后maven会下载需要的jar包到本地仓库，然后就构建成功
+
+![image-20261029202700959](./mvn-note02-maven的核心概念.assets/image-20261029202700959.png)
+
+## 2.10查看运行项目目录，发现生成了一个target文件夹，
+
+![image-20261029202942041](./mvn-note02-maven的核心概念.assets/image-20261029202942041.png)
+
+## target里面有3个文件夹，
+
+
+
+![image-20261029202909255](./mvn-note02-maven的核心概念.assets/image-20261029202909255.png)
+
+
+
+## 其中classes里面就有我们的类生成的字节码文件
+
+![image-20261029203017478](./mvn-note02-maven的核心概念.assets/image-20261029203017478.png)
+
+## 2.11需要注意，如果我们要运行这个文件，不能够在maven里面运行需要打开终端定位到classes路径里面，否则会报错说找不到主类，因为我们这个类的网址路径是org.kenny.maven.HelloMaven
+
+![image-20261029205135183](./mvn-note02-maven的核心概念.assets/image-20261029205135183.png)
+
+## 2.12 要清除的话，可以输入mvn clean，执行成功后，发现target文件夹被删除了
+
+![image-20261029203810632](./mvn-note02-maven的核心概念.assets/image-20261029203810632.png)
+
+## 2.13还可以使用mvn clean install命令把项目打包安装到maven本地仓库
+
+![image-20261029205727673](./mvn-note02-maven的核心概念.assets/image-20261029205727673.png)
+
+![image-20261029205754760](./mvn-note02-maven的核心概念.assets/image-20261029205754760.png)
+
+### 执行成功后在本地仓库可以找到我们的jar包
+
+![image-20261029205951517](./mvn-note02-maven的核心概念.assets/image-20261029205951517.png)
