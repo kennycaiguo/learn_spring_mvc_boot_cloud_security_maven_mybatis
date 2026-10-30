@@ -400,3 +400,18 @@ logger.info("我是一条日志消息");
 ```
 
 # 
+
+## 演练1，第一个spring项目
+
+## 1.打开idea,新建一个空项目，起名springdemo1
+
+![image-20261029152344554](./note03-Spring入门程序.assets/image-20261029152344554.png)
+
+![image-20261029152424616](./note03-Spring入门程序.assets/image-20261029152424616.png)
+
+## 2.点击文件=》项目结构，对项目进行一些设置，如图
+
+![image-20261029152602010](./note03-Spring入门程序.assets/image-20261029152602010.png)
+
+## 3.点击文件，设置，设置一下maven工具
+
