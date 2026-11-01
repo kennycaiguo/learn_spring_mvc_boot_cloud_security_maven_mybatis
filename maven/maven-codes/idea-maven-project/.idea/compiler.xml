@@ -6,11 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="maven-web03" />
+        <module name="maven-son" />
         <module name="maven-web1" />
+        <module name="maven-08" />
+        <module name="a1" />
+        <module name="maven-09" />
+        <module name="a2" />
+        <module name="maven-06" />
+        <module name="maven-07" />
+        <module name="maven-01" />
+        <module name="maven-10" />
+        <module name="maven-web03" />
+        <module name="maven-04" />
         <module name="maven-web02" />
-        <module name="maven01" />
+        <module name="maven-05" />
+        <module name="maven-02" />
         <module name="maven-web04" />
+        <module name="maven-03" />
       </profile>
     </annotationProcessing>
   </component>

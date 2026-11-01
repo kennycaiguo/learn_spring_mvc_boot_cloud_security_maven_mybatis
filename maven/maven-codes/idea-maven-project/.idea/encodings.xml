@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/a/a1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/a/a1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/a/a2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/a/a2/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/a/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/a/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-01/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-01/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-02/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-02/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-03/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-03/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-04/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-04/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-05/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-05/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-06/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-06/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-07/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-07/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-08/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-08/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-09/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-09/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-10/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-10/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-parent/maven-son/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-parent/maven-son/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-parent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven-parent/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven-web02/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven-web02/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven-web03/src/main/java" charset="UTF-8" />
@@ -9,7 +39,5 @@
     <file url="file://$PROJECT_DIR$/maven-web04/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven-web1/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven-web1/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/maven01/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/maven01/src/main/resources" charset="UTF-8" />
   </component>
 </project>
