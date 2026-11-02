@@ -23,6 +23,15 @@
         <option value="$PROJECT_DIR$/maven-09/pom.xml" />
         <option value="$PROJECT_DIR$/maven-10/pom.xml" />
         <option value="$PROJECT_DIR$/a/pom.xml" />
+        <option value="$PROJECT_DIR$/one/pom.xml" />
+        <option value="$PROJECT_DIR$/two/pom.xml" />
+        <option value="$PROJECT_DIR$/three/pom.xml" />
+        <option value="$PROJECT_DIR$/four/pom.xml" />
+        <option value="$PROJECT_DIR$/one1/pom.xml" />
+        <option value="$PROJECT_DIR$/one2/pom.xml" />
+        <option value="$PROJECT_DIR$/one3/pom.xml" />
+        <option value="$PROJECT_DIR$/maven-nexus-module/pom.xml" />
+        <option value="$PROJECT_DIR$/use_maven_nexus/pom.xml" />
       </list>
     </option>
   </component>

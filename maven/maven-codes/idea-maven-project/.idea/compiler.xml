@@ -14,7 +14,11 @@
         <module name="a2" />
         <module name="maven-06" />
         <module name="maven-07" />
+        <module name="maven-nexus-module" />
+        <module name="use_maven_nexus" />
+        <module name="one2" />
         <module name="maven-01" />
+        <module name="one3" />
         <module name="maven-10" />
         <module name="maven-web03" />
         <module name="maven-04" />
@@ -23,7 +27,13 @@
         <module name="maven-02" />
         <module name="maven-web04" />
         <module name="maven-03" />
+        <module name="one1" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="four" target="21" />
+      <module name="three" target="21" />
+      <module name="two" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
