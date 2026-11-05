@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace先随意写一个-->
+<mapper namespace="car">
+    <!--insert sql：保存一个汽车信息-->
+    <!--
+       可用标签，insert,update,delete,select
+       在mapper文件中，sql语句可用不用;结尾
+    -->
+    <insert id="insertCar">
+        insert into t_car
+            (id,car_num,brand,guide_price,produce_time,car_type)
+        values
+            (null,'沪A66600','别克150',30.30,'2025-10-05','新能源')
+    </insert>
+</mapper>
