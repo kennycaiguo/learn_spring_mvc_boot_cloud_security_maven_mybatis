@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Car">
+  <!-- 使用map类型作为参数 -->
+   <insert id="insertCar" parameterType="java.util.Map" >
+     <!--mybatis中是占位符是#{},如果你在java代码里面是使用map来赋值，#{}里面需要写map的key-->
+       insert into t_car
+            (id,car_num,brand,guide_price,produce_time,car_type)
+       values
+            (null,#{car_num},#{brand},#{guide_price},#{produce_time},#{car_type})
+   </insert>
+  <!--使用实体类作为参数-->
+    <insert id="insertCar2" parameterType="org.kenny.mybatis.entity.Car" >
+        <!--mybatis中是占位符是#{},如果你在java代码里面是使用map来赋值，#{}里面需要写map的key-->
+        insert into t_car
+        (id,car_num,brand,guide_price,produce_time,car_type)
+        values
+        (null,#{carNum},#{brand},#{guidePrice},#{produceTime},#{carType})
+    </insert>
+</mapper>

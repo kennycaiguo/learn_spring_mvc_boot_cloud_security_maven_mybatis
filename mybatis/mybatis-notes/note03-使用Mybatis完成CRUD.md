@@ -491,4 +491,258 @@ public void testNamespace(){
 
 ![1763614683732-039827cd-b984-4c65-8ea2-e75b30539e73.png](./note03-使用Mybatis完成CRUD.assets/1763614683732-039827cd-b984-4c65-8ea2-e75b30539e73-867688.png)
 
-# 
+# 演练.用mybatis实现CRUD
+
+# 基于Map来保存
+
+## 1.还是mybatis-project项目，我们新建一个模块，起名：mybatis-002-crud，在pom.xml里面添加mybatis依赖和mysql驱动的依赖
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.kenny</groupId>
+    <artifactId>mybatis-002-crud</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+      <!--mybatis依赖-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.19</version>
+        </dependency>
+        <!--mysql驱动包-->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.4.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--JUnit测试依赖-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.12.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
+```
+
+## 2.在main/resoureces文件夹里面添加mybatis核心配置文件和SqlMapper配置文件
+
+![image-20261105164614158](./note03-使用Mybatis完成CRUD.assets/image-20261105164614158.png)
+
+## 3.把我们封装的SqlSessonUtil复制粘贴过来，方便编程
+
+![image-20261105165536532](./note03-使用Mybatis完成CRUD.assets/image-20261105165536532.png)
+
+
+
+## 4.因为我们的CarMapper除了骨架代码之外，基本上是空的，我们先来添加插入数据代码，注意，数据不能够写死，而是要用java代码给它传值，占位符是#{}
+
+![image-20261105170247600](./note03-使用Mybatis完成CRUD.assets/image-20261105170247600.png)
+
+## 5.然后我们写一段测试代码来测试一下
+
+![image-20261105174833166](./note03-使用Mybatis完成CRUD.assets/image-20261105174833166.png)
+
+## 6.注意：此时我们需要回到CarMapper.xml中map中的key绑定到#{}里面
+
+![image-20261105172204869](./note03-使用Mybatis完成CRUD.assets/image-20261105172204869.png)
+
+## 7.在运行测试之前，需要检查一下mybatis-config.xml里面的mapper属性有没有设置，语句CarMapper.xml里面的namespace有没有值这两个不允许空，否则测试不通过
+
+![image-20261105174227816](./note03-使用Mybatis完成CRUD.assets/image-20261105174227816.png)
+
+![image-20261105174152273](./note03-使用Mybatis完成CRUD.assets/image-20261105174152273.png)
+
+## 8.运行测试，成功通过
+
+![image-20261105174309412](./note03-使用Mybatis完成CRUD.assets/image-20261105174309412.png)
+
+## 9.查看数据库，发现新增成功
+
+![image-20261105174439766](./note03-使用Mybatis完成CRUD.assets/image-20261105174439766.png)
+
+### 注意，如果你在CarMapper中把map的一个key写错了，程序还是会正常执行，只是这个字段获取不到值
+
+![image-20261105175356484](./note03-使用Mybatis完成CRUD.assets/image-20261105175356484.png)
+
+![image-20261105180149298](./note03-使用Mybatis完成CRUD.assets/image-20261105180149298.png)
+
+### 注意，为了方便编程，我们应该尽量把map的key的名称改为占位符的名称的小驼峰格式或者一致
+
+![image-20261105181726467](./note03-使用Mybatis完成CRUD.assets/image-20261105181726467.png)
+
+### 然后需要修改CarMapper占位符里面的key
+
+![image-20261105181852320](./note03-使用Mybatis完成CRUD.assets/image-20261105181852320.png)
+
+### 运行测试，顺利通过
+
+![image-20261105181940843](./note03-使用Mybatis完成CRUD.assets/image-20261105181940843.png)
+
+### 数据库也顺利添加数据
+
+![image-20261105182021290](./note03-使用Mybatis完成CRUD.assets/image-20261105182021290.png)
+
+### 还有一个需要注意的地方mybatis sqlMapper.xml的insert语句，有第二个参数，用来指定参数类型，这个参数是可省的。
+
+![image-20261105182334482](./note03-使用Mybatis完成CRUD.assets/image-20261105182334482.png)
+
+### 还有其他写法
+
+![image-20261105182527090](./note03-使用Mybatis完成CRUD.assets/image-20261105182527090.png)
+
+
+
+### 当然不设置这个参数也是可以的，只是设置了，效率会更高
+
+
+
+# 基于实体类entity来保存
+
+## 1.我们新建一个entity包，在里面新建一个Car类，
+
+![image-20261105183546653](./note03-使用Mybatis完成CRUD.assets/image-20261105183546653.png)
+
+### Car类的代码如下
+
+```
+package org.kenny.mybatis.entity;
+
+import java.math.BigDecimal;
+
+public class Car {
+    private Long id;
+    private String carNum;
+    private String brand;
+    private BigDecimal guidePrice;
+    private String produceTime;
+    private String carType;
+
+    public Car() {
+    }
+    //没有id的构造方法，因为数据库里面的id是自增的
+    public Car(String carNum, String brand, BigDecimal guidePrice, String produceTime, String carType) {
+        this.id = null;
+        this.carNum = carNum;
+        this.brand = brand;
+        this.guidePrice = guidePrice;
+        this.produceTime = produceTime;
+        this.carType = carType;
+    }
+    public Car(Long id, String carNum, String brand, BigDecimal guidePrice, String produceTime, String carType) {
+        this.id = id;
+        this.carNum = carNum;
+        this.brand = brand;
+        this.guidePrice = guidePrice;
+        this.produceTime = produceTime;
+        this.carType = carType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCarNum() {
+        return carNum;
+    }
+
+    public void setCarNum(String carNum) {
+        this.carNum = carNum;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public BigDecimal getGuidePrice() {
+        return guidePrice;
+    }
+
+    public void setGuidePrice(BigDecimal guidePrice) {
+        this.guidePrice = guidePrice;
+    }
+
+    public String getProduceTime() {
+        return produceTime;
+    }
+
+    public void setProduceTime(String produceTime) {
+        this.produceTime = produceTime;
+    }
+
+    public String getCarType() {
+        return carType;
+    }
+
+    public void setCarType(String carType) {
+        this.carType = carType;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", carNum='" + carNum + '\'' +
+                ", brand='" + brand + '\'' +
+                ", guidePrice=" + guidePrice +
+                ", produceTime='" + produceTime + '\'' +
+                ", carType='" + carType + '\'' +
+                '}';
+    }
+}
+
+```
+
+## 2.我们给TestMybatisCrud添加一个testMybatisInsertEntity方法
+
+![image-20261105191035127](./note03-使用Mybatis完成CRUD.assets/image-20261105191035127.png)
+
+## 3.然后我们需要根据要求在CarMapper.xml里面新建一个id为insertCar2的insert语句，注意此时的参数类型必须是类名的全路径，否则就会找不到类而保存
+
+![image-20261105191346613](./note03-使用Mybatis完成CRUD.assets/image-20261105191346613.png)
+
+## 4.运行此时，顺利通过
+
+![image-20261105191425183](./note03-使用Mybatis完成CRUD.assets/image-20261105191425183.png)
+
+## 5.查看数据库，发现新增成功
+
+![image-20261105191516832](./note03-使用Mybatis完成CRUD.assets/image-20261105191516832.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
