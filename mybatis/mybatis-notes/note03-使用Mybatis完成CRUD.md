@@ -1,7 +1,5 @@
 # 3.使用MyBatis完成CRUD
 
-![1757681056420-39d1bc52-55fe-4f3b-8183-b4d7ba79b166.jpeg](./note03-使用Mybatis完成CRUD.assets/1757681056420-39d1bc52-55fe-4f3b-8183-b4d7ba79b166-925450.jpeg)
-
 创建module（Maven的普通Java模块）：mybatis-002-crud
 
 ## insert
@@ -732,17 +730,59 @@ public class Car {
 
 ![image-20261105191516832](./note03-使用Mybatis完成CRUD.assets/image-20261105191516832.png)
 
+### 注意： mybatis是如何从类对象里面获取到值来填充到占位符的呢？如下面描述那样。
 
+![image-20261106185823437](./note03-使用Mybatis完成CRUD.assets/image-20261106185823437.png)
 
+# 演练2.delete功能的实现
 
+## 2.1在测试类里面添加一个删除测试方法，代码如下
 
+![image-20261106194310643](./note03-使用Mybatis完成CRUD.assets/image-20261106194310643.png)
 
+## 2.2然后，我们需要在CarMapper里面添加一条删除语句，注意id必须和我们java代码里面的一致
 
+![image-20261106194525453](./note03-使用Mybatis完成CRUD.assets/image-20261106194525453.png)
 
+## 2.3运行测试，发现测试通过。
 
+![image-20261106195008532](./note03-使用Mybatis完成CRUD.assets/image-20261106195008532.png)
 
+## 2.4查看数据库，发现id为15的记录被删除了
 
+![image-20261106195114936](./note03-使用Mybatis完成CRUD.assets/image-20261106195114936.png)
 
+# 演练3.mybatis实现修改记录
 
+## 3.1在测试类里面新建一个通过id来更新数据的测试方法
 
+![image-20261106200857297](./note03-使用Mybatis完成CRUD.assets/image-20261106200857297.png)
+
+## 3.2然后我们在CarMapper.xml里面添加一条update语句，id号是updateById
+
+![image-20261106201012239](./note03-使用Mybatis完成CRUD.assets/image-20261106201012239.png)
+
+## 3.3运行测试，顺利通过
+
+![image-20261106201122971](./note03-使用Mybatis完成CRUD.assets/image-20261106201122971.png)
+
+## 3.4查看数据库，发现数据被成功修改了
+
+![image-20261106201355147](./note03-使用Mybatis完成CRUD.assets/image-20261106201355147.png)
+
+### 当然，也可以只修改几个字段，比如我们新增一条修改语句，在修改3个字段
+
+![image-20261106202415312](./note03-使用Mybatis完成CRUD.assets/image-20261106202415312.png)
+
+### 然后我们修改一下测试代码
+
+![image-20261106202505724](./note03-使用Mybatis完成CRUD.assets/image-20261106202505724.png)
+
+### 测试通过
+
+![image-20261106202534186](./note03-使用Mybatis完成CRUD.assets/image-20261106202534186.png)
+
+### 检查数据库，发现也能修改成功，不修改的字段就不需要设置
+
+![image-20261106202329074](./note03-使用Mybatis完成CRUD.assets/image-20261106202329074.png)
 

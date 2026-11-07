@@ -43,4 +43,39 @@ public class TestMybatisCrud {
         }
 
     }
+    @Test
+    public void testMybatisDeleteById() {
+        try (SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            int count = sqlSession.delete("deleteById", "15");
+            System.out.println(count==1?"删除成功，删除了"+count+"条记录":"删除失败");
+            //提交事务
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //利用id来更新数据
+    @Test
+    public void testMybatisUpdateById() {
+        try (SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            //修改id为7的记录的数据
+            Car car = new Car();
+            car.setId(7L);
+//            car.setCarNum("莞B55555");
+            car.setBrand("红旗2");
+            car.setGuidePrice(new BigDecimal("55.50"));
+//            car.setProduceTime("2024-10-24");
+            car.setCarType("新能源");
+//            int count = sqlSession.update("updateById", car);
+            int count = sqlSession.update("updateById2", car);
+            System.out.println(count==1?"成功更新"+count+"条记录":"更新数据失败");
+            //手动提交
+            sqlSession.commit();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
