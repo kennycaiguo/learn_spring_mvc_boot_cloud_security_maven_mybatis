@@ -23,6 +23,7 @@
             mapper的resource属性是从类的根路径开始查找的，而在maven项目中，resources目录就是类的根路径
         -->
         <mapper resource="CarMapper.xml"/>
+        <mapper resource="CarMapper1.xml"/>
     </mappers>
 
 </configuration>

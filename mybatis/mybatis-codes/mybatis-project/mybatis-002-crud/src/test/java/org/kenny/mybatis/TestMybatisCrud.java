@@ -6,6 +6,7 @@ import org.kenny.mybatis.util.SqlSessionUtil;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.kenny.mybatis.entity.Car;
 
@@ -74,6 +75,44 @@ public class TestMybatisCrud {
             //手动提交
             sqlSession.commit();
 
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testMybatisSelectById(){
+        try(SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            Car o = (Car)sqlSession.selectOne("selectById", 7L);
+            System.out.println(o);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testMybatisSelectByCarNum(){
+        try(SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            List<Car> cars= sqlSession.selectList("selectByCarNum", "津k88888");
+            System.out.println(cars);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMybatisSelectAll(){
+        try(SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            List<Car> cars= sqlSession.selectList("selectAll");
+            cars.forEach(System.out::println);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMybatisNameSpace(){
+        try(SqlSession sqlSession = SqlSessionUtil.openSession()) {
+            Car o = (Car)sqlSession.selectOne("Car1.selectById", 7L);
+            System.out.println(o);
         }catch (Exception e) {
             e.printStackTrace();
         }

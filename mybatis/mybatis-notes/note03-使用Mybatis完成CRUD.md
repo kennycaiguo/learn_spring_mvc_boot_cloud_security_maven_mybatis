@@ -786,3 +786,62 @@ public class Car {
 
 ![image-20261106202329074](./note03-使用Mybatis完成CRUD.assets/image-20261106202329074.png)
 
+# 演练4.查询数据
+
+## 4.1我们首先来学习查询一条数据，先在CarMapper.xml里面添加一条select语句，这里有个坑，需要填写resultType，否则抛异常
+
+![image-20261107190415924](./note03-使用Mybatis完成CRUD.assets/image-20261107190415924.png)
+
+## 4.2.然后我们写一个测试方法：testMybatisSelectById
+
+![image-20261107191704965](./note03-使用Mybatis完成CRUD.assets/image-20261107191704965.png)
+
+## 4.3运行程序，你会发现一个很奇怪的现象，测试没有报错，但是只有一个字段获取到值
+
+![image-20261107190634479](./note03-使用Mybatis完成CRUD.assets/image-20261107190634479.png)
+
+## 4.4解决办法之一就是在CarMapper里面给字段起个别名，必须和类首属性名称一致
+
+![image-20261107191133616](./note03-使用Mybatis完成CRUD.assets/image-20261107191133616.png)
+
+## 4.5运行测试，就可以拿到结果
+
+![image-20261107191213873](./note03-使用Mybatis完成CRUD.assets/image-20261107191213873.png)
+
+## 4.6需要注意，sqlSession对象里面的selectOne方法，只能够用于只有一个结果的查询，如果一个查询的结果多于1，就会抛异常
+
+![image-20261107192620377](./note03-使用Mybatis完成CRUD.assets/image-20261107192620377.png)
+
+## 4.7.怎么查询多个结果？其实可以使用sqlSession的selectList方法，注意，在CarMapper.xml里面的返回值类型仍然是org.kenny.mybatis.entity.Car
+
+![image-20261107194138365](./note03-使用Mybatis完成CRUD.assets/image-20261107194138365.png)
+
+## 4.8查询所有也是一样的道理，只是不需要后面的条件
+
+![image-20261107195633020](./note03-使用Mybatis完成CRUD.assets/image-20261107195633020.png)
+
+![image-20261107195701427](./note03-使用Mybatis完成CRUD.assets/image-20261107195701427.png)
+
+## 注意，如果你的sql只返一条记录，也是可以使用selectList方法来查询的。没有问题。只是好像没有必要。但是切记，如果sql会返回多条记录不能用selectOne方法，否则抛异常。
+
+# 演练5.关于mapper的namespace的作用练习
+
+## 5.1新建一个测试方法改名：testMybatisNameSpace代码和testMybatisSelectById方法的代码一样
+
+![image-20261107201934332](./note03-使用Mybatis完成CRUD.assets/image-20261107201934332.png)
+
+## 5.2.把CarMapper.xml复制一份，改名CarMapper1.xml，只保留查询一条记录的sql配置，把命名空间改为Car1
+
+![image-20261107202112433](./note03-使用Mybatis完成CRUD.assets/image-20261107202112433.png)
+
+## 5.3然后在mybatis-config.xml文件里面引入这个Mapper文件
+
+![image-20261107202221927](./note03-使用Mybatis完成CRUD.assets/image-20261107202221927.png)
+
+## 5.4运行测试，会抛异常，因为有两个一样的sql，mybatis不知道改用哪一个
+
+![image-20261107202412976](./note03-使用Mybatis完成CRUD.assets/image-20261107202412976.png)
+
+## 5.5解决办法就是在sql语句的id前面添加命名空间限制
+
+![image-20261107202610896](./note03-使用Mybatis完成CRUD.assets/image-20261107202610896.png)
