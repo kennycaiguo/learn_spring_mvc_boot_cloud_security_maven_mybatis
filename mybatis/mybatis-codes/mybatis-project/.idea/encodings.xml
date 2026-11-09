@@ -7,5 +7,7 @@
     <file url="file://$PROJECT_DIR$/mybatis-002-crud/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-003-configuration/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-003-configuration/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-004-maven-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-004-maven-web/src/main/resources" charset="UTF-8" />
   </component>
 </project>

@@ -1,0 +1,47 @@
+<configuration>
+    <!-- 控制台输出格式简化 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 错误日志单独文件输出:滚动记录，最多保留7天的日志。 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!--
+              记录日志的时间、线程、日志级别、类名（缩写）和消息内容，并换行。
+                %d{yyyy-MM-dd HH:mm:ss} 记录日志的时间
+                [%thread] 线程名
+                %-5level  日志级别，左对齐，留5个字符的空间
+                %logger{36}  类名，最多保留36个字符的空间
+                %msg 日志消息
+                %n 换行
+              例如：2026-06-24 18:30:45 [http-nio-8080-exec-1] INFO  com.jkweilai.service.AccountService - 转账成功
+            -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Thymeleaf相关日志设置：只打印ERROR级别日志，但是给TemplateEngine类开一个小灶，让它能打印INFO级别的日志 -->
+    <logger name="org.thymeleaf" level="ERROR"/>
+    <logger name="org.thymeleaf.TemplateEngine" level="INFO"/>
+
+    <!-- JDBC日志设置：默认Hikari打印日志太多，设置为WARN，只打印重要日志 连接池的日志 -->
+    <logger name="java.sql" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
+    <!-- 应用包路径日志设置，可以看到自己写的业务逻辑、控制器、服务类的运行情况 -->
+    <logger name="org.kenny" level="INFO"/>
+
+    <!-- 全局日志级别为：全局日志级别设为 WARN，所有日志同时输出到控制台和错误日志文件 -->
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>

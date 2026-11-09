@@ -709,5 +709,5 @@ public class AccountServiceImpl implements AccountService {
 
 ![1744115142994-bcedbef1-b9e9-4ac2-aa76-005f8d0655dc.png](./note05-在WEB中应用MyBatis（使用三层架构）.assets/1744115142994-bcedbef1-b9e9-4ac2-aa76-005f8d0655dc-430880.png)
 
-# 
+
 
