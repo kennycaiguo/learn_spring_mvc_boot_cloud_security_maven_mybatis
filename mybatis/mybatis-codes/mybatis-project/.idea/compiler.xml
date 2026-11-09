@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="mybatis-002-crud" />
         <module name="mybatis-001-introduction" />
+        <module name="mybatis-003-configuration" />
       </profile>
     </annotationProcessing>
   </component>

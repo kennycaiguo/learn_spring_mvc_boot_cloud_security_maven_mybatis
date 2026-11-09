@@ -845,3 +845,4 @@ public class Car {
 ## 5.5解决办法就是在sql语句的id前面添加命名空间限制
 
 ![image-20261107202610896](./note03-使用Mybatis完成CRUD.assets/image-20261107202610896.png)
+
