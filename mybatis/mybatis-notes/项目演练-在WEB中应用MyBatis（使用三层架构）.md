@@ -656,5 +656,64 @@ public class TranDaoImpl implements TranDao {
 
 # 演练2.开启事务功能，通过使用ThreadLocal类来实现
 
-## 2.1继续使用这个项目，
+在继续编程之前，我们需要搞清楚一点，就是mybatis那几个常用对象的生命周期，SqlSessionFactoryBuilder只是用来创建SqlSessionFactory的，一旦创建完毕，它就没有用了。可以丢弃。SqlSessionFactory需要在程序运行期间一直存在，不能随便丢弃，也不能随便创建实例。也就是相当于单例模式。重复创建SqlSessionFactory对象是一种“坏习惯”。SqlSession是线程不安全的。每一个线程都应该有自己的SqlSession对象而不要和其他线程共享SqlSession对象。SqlSession对象需要绑定到ThreadLocal中
 
+## 2.1继续使用这个项目，回到SqlSessionUtil类中，创建一个ThreadLocal对象
+
+![image-20261110160029389](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110160029389.png)
+
+### 2.2我们先来模拟一下异常，看看修改之前的代码有什么问题
+
+![image-20261110161410729](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161410729.png)
+
+### 2.3在运行程序之前，我们先看看数据库，现在是一个账户有40000元另外一个账户有10000元。
+
+![image-20261110160838809](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110160838809.png)
+
+## 2.4 启动服务器，做一次转账
+
+![image-20261110161028530](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161028530.png)
+
+## 2.5此时页面说转账失败
+
+![image-20261110161108407](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161108407.png)
+
+## 2.6我们来刷新数据库，发现第一个账户亏了10000元，另外一个账户没有变化
+
+![image-20261110161511382](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161511382.png)
+
+## 2.7 然后我们修改一下创建SqlSession对象的方法，把它绑定到ThreadLocal中
+
+![image-20261110160229664](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110160229664.png)
+
+## 2.8我们先不移除移除代码，重启服务器再来做一次转账
+
+![image-20261110161750822](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161750822.png)
+
+
+
+## 2.9此外我们还需要修改一下dao中的代码，因为我们现在在service里面的seqlSession对象和这里的sqlSession对象是同一个对象，我们在service里面提交和不好异常所以这里也不需要捕获异常
+
+![image-20261110173919993](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110173919993.png)
+
+![image-20261110173942725](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110173942725.png)
+
+## 2.10此时转账还是会失败
+
+![image-20261110161823689](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110161823689.png)
+
+## 2.11查看数据库，发现没有程序亏钱的现象了
+
+![image-20261110174136873](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110174136873.png)
+
+## 2.12，我们把异常代码移除，再来做一次转账
+
+![image-20261110174330432](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110174330432.png)
+
+## 2.13页面说转账成功
+
+![image-20261110174358378](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110174358378.png)
+
+## 2.14查看数据库，发现转账成功
+
+![image-20261110174434681](./项目演练-在WEB中应用MyBatis（使用三层架构）.assets/image-20261110174434681.png)

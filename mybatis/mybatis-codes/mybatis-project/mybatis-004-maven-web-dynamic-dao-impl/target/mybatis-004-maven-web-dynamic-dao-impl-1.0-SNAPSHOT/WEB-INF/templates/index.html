@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>银行账户转账</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #34495e;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>银行账户转账</h1>
+
+  <form id="transferForm" method="post" th:action="@{/transfer}">
+    <div class="form-group">
+      <label for="fromAccount">转出账户</label>
+      <input type="text" id="fromAccount" name="fromAccount" placeholder="请输入转出账户号码" required>
+      <div class="hint">例如：6222021234567890123</div>
+    </div>
+
+    <div class="form-group">
+      <label for="toAccount">转入账户</label>
+      <input type="text" id="toAccount" name="toAccount"  placeholder="请输入转入账户号码" required>
+      <div class="hint">例如：6228481234567890123</div>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">转账金额 (元)</label>
+      <input type="number" id="amount" name="amount" min="0.01" step="0.01" placeholder="请输入转账金额" required>
+    </div>
+
+    <button id="transferBtn">确认转账</button>
+  </form>
+
+  <div id="resultMessage" class="result"></div>
+</div>
+
+<script>
+  document.getElementById('transferBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const fromAccount = document.getElementById('fromAccount').value.trim();
+    const toAccount = document.getElementById('toAccount').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    // 简单验证
+    if (!fromAccount || !toAccount || isNaN(amount) || amount <= 0) {
+      showResult('请填写完整的转账信息，且金额必须大于0', false);
+      return;
+    }
+
+    // 验证账户格式（简单验证是否为数字）
+    if (!/^\d+$/.test(fromAccount) || !/^\d+$/.test(toAccount)) {
+      showResult('账户号码必须为数字', false);
+      return;
+    }
+
+    // 账户长度验证（通常银行账号16-19位）
+    if (fromAccount.length < 16 || fromAccount.length > 19 ||
+            toAccount.length < 16 || toAccount.length > 19) {
+      showResult('账户号码长度应在16-19位之间', false);
+      return;
+    }
+
+    if (fromAccount === toAccount) {
+      showResult('转出账户和转入账户不能相同', false);
+      return;
+    }
+
+    // 提交表单
+    document.getElementById("transferForm").submit();
+  });
+
+  function showResult(message, isSuccess) {
+    const resultMessage = document.getElementById('resultMessage');
+    resultMessage.textContent = message;
+    resultMessage.className = 'result ' + (isSuccess ? 'success' : 'error');
+    resultMessage.style.display = 'block';
+    // 5秒后自动隐藏消息
+    setTimeout(() => {
+      resultMessage.style.display = 'none';
+    }, 5000);
+  }
+</script>
+</body>
+</html>

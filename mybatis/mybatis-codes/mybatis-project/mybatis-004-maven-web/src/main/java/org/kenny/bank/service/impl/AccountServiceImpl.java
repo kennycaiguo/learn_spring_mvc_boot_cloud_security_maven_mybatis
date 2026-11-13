@@ -53,7 +53,6 @@ public class AccountServiceImpl implements AccountService {
                     //抛异常
                     throw new BusinessException("BALANCE_UPDATE_FAIL","更新转出账户余额失败");
                 }
-
                 //4.更新转入账户的余额
                 toAcc.setBalance(toAcc.getBalance().add(accountDTO.getAmount()));
                 count += accountDao.updateBalance(toAcc);
@@ -62,6 +61,7 @@ public class AccountServiceImpl implements AccountService {
                     //抛异常
                     throw new BusinessException("BALANCE_UPDATE_FAIL","更新转入账户余额失败");
                 }
+
                 //5.保存转账记录
                 String tranNo = TranNoGenerator.generate();
                 tran = new Tran(accountDTO.getFromAccount(),accountDTO.getToAccount(),
@@ -81,8 +81,8 @@ public class AccountServiceImpl implements AccountService {
                 e.printStackTrace();
                 throw new BusinessException("TRANSFER_ERROR","转账失败");
             } finally {
-                //关闭数据库连接,需要在DbUtils里面添加一个新的close方法，只需要一个Connection参数
-
+                //解绑
+               SqlSessionUtil.closeSession();
             }
         } catch (Exception e) {
             throw new BusinessException("TRANSFER_ERROR","转账失败");

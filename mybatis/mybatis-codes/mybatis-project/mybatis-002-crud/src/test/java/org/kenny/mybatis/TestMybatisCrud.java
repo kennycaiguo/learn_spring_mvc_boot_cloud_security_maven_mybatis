@@ -64,10 +64,10 @@ public class TestMybatisCrud {
             //修改id为7的记录的数据
             Car car = new Car();
             car.setId(7L);
-//            car.setCarNum("莞B55555");
+            car.setCarNum("莞B55555");
             car.setBrand("红旗2");
             car.setGuidePrice(new BigDecimal("55.50"));
-//            car.setProduceTime("2024-10-24");
+            car.setProduceTime("2024-10-24");
             car.setCarType("新能源");
 //            int count = sqlSession.update("updateById", car);
             int count = sqlSession.update("updateById2", car);

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间必须和mapper类的完全名称一致-->
+<mapper namespace="org.kenny.bank.mapper.TranMapper">
+    <!--sql语句的id必须是dao接口的方法名-->
+    <insert id="insert" parameterType="org.kenny.bank.entity.Tran">
+        insert into
+             t_tran(from_act_no,to_act_no,amount,tran_time,tran_no)
+        values
+             (#{fromActNo},#{toActNo},#{amount},NOW(),#{tranNo})
+    </insert>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace改为：org.kenny.bank.mapper.AccountMapper-->
+<mapper namespace="org.kenny.bank.mapper.AccountMapper">
+   <!--sql语句的id必须是dao接口的方法名-->
+   <select id="selectByAcctNo" resultType="org.kenny.bank.entity.Account">
+       select id,act_no as ActNo,balance from t_act where act_no=#{actNo}
+   </select>
+
+    <update id="updateBalance" parameterType="org.kenny.bank.entity.Account">
+        update t_act set balance=#{balance} where act_no=#{actNo}
+    </update>
+</mapper>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转账结果</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .status-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #2ecc71;
+        }
+
+        .detail-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .amount {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .transaction-number {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .continue-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .continue-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="status-icon">✓</div>
+    <h1>转账成功</h1>
+
+    <!--从VO中获取数据渲染页面-->
+    <div class="detail-card">
+        <div class="detail-row">
+            <span class="detail-label">转出账户</span>
+            <span class="detail-value" th:text="${accountVO.fromActNo}">****9012</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">转入账户</span>
+            <span class="detail-value"  th:text="${accountVO.toActNo}">****2333</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">转账金额</span>
+            <span class="detail-value amount" th:text="|￥${accountVO.amount}|">1,500.00</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">转账时间</span>
+            <span class="detail-value" th:text="${accountVO.tranTime}"></span>
+        </div>
+    </div>
+
+    <div class="transaction-number" th:text="|交易流水号: ${accountVO.tranNo}|"></div>
+    <button class="continue-btn" th:onclick="|window.location.href='@{/}'|">继续转账</button>
+</div>
+</body>
+</html>

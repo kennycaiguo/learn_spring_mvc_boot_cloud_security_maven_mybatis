@@ -10,36 +10,17 @@ import org.slf4j.LoggerFactory;
 
 
 public class AccountDaoImpl implements AccountDao {
-    //定义一个日志记录器
-    private  static final Logger logger = LoggerFactory.getLogger(AccountDaoImpl.class);
 
     @Override
     public Account selectByAcctNo(String accNo) {
-        try(SqlSession sqlSession = SqlSessionUtil.openSession();){
-             Account  account = (Account)sqlSession.selectOne("selectByActNo", accNo);
-             return account;
-        } catch (Exception e) {
-            e.printStackTrace();
-            //记录日志
-            logger.error("查询账号{}查询账户信息异常",accNo);
-            //将异常转化为自定义数据访问异常，往上抛
-            throw new DataAccessException("查询账号"+accNo+"查询账户信息异常",e);
-        }
+        //SqlSession对象在这里不要关闭
+        return SqlSessionUtil.openSession().selectOne("selectByActNo", accNo);
     }
 
     @Override
     public int updateBalance(Account newAccount) {
-        try( SqlSession sqlSession = SqlSessionUtil.openSession()){
-            int count = sqlSession.update("updateByActNo", newAccount);
-            sqlSession.commit();//必须提交，否则数据库的数据不会改变。
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            //记录日志
-            logger.error("更新账户{}余额异常",newAccount.getActNo());
-            //将异常转化为自定义数据访问异常，往上抛
-            throw new DataAccessException("更新账号"+newAccount.getActNo()+"查询账户余额异常",e);
-        }
-
+        return SqlSessionUtil.openSession().update("updateByActNo", newAccount);
+        //这里不需要提交因为我们现在在service里面的seqlSession对象和这里的sqlSession对象是同一个对象，我们在service里面提交和不好异常
+        //所以这里也不需要捕获异常
     }
 }

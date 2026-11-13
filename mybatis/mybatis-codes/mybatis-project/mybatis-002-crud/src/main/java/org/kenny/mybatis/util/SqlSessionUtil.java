@@ -8,7 +8,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.InputStream;
 
 public class SqlSessionUtil {
+
     private static SqlSessionFactory factory = null;
+    private static ThreadLocal<SqlSession> local= new ThreadLocal<>();
+
     private  SqlSessionUtil(){} //把构造方法设置为私有，防止在外面用这个类创建对象
     //因为整个项目只需要一个SessionFactory对象，我们只需要在静态代码块里面创建一次
     static {
@@ -26,6 +29,15 @@ public class SqlSessionUtil {
      * @return 返回值：SqlSession对象
      */
     public static SqlSession openSession(){
-        return factory.openSession();
+        SqlSession session = local.get();
+        if(session==null){
+            session = factory.openSession();
+            local.set(session);
+        }
+        return session;
+    }
+    //解绑
+    public static void closeSession(){
+        local.remove(); //注意这里不需要手动改变SessionFactory对象，因为我们使用try with resource，他会自动关闭
     }
 }

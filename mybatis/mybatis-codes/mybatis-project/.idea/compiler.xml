@@ -6,11 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mybatis-004-maven-web-dynamic-dao-impl" />
         <module name="mybatis-001-introduction" />
+        <module name="mybatis-005-antic" />
         <module name="mybatis-002-crud" />
         <module name="mybatis-003-configuration" />
         <module name="mybatis-004-maven-web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mybatis-005-dynamic-dao-impl" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>转账失败</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #e74c3c;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .status-icon {
+      font-size: 60px;
+      margin-bottom: 25px;
+      color: #e74c3c;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+
+    .continue-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .continue-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="status-icon">✕</div>
+  <h1>转账失败</h1>
+  <div class="error-message" th:text="|转账失败原因:${errorCode},${errorMessage}|">转账失败原因：账户余额不足</div>
+  <button class="continue-btn" th:onclick="|window.location.href='@{/}'|">继续转账</button>
+</div>
+</body>
+</html>
