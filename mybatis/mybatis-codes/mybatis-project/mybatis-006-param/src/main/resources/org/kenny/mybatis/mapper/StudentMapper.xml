@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kenny.mybatis.mapper.StudentMapper">
+    <select id="selectByBirth" parameterType="date" resultType="Student">
+        select
+               id,name,age,height,birth,sex
+        from
+             t_student
+        where
+            birth=#{birth}
+    </select>
+    <select id="selectByNameAndSex">
+        select * from t_student where name=#{param1} and sex=#{param2}
+    </select>
+
+  <!--这种方法需要在mapper的方法里面给参数起名，然后我们使用这个名称来传递参数-->
+    <select id="selectByNameAndSex2">
+        select * from t_student where name=#{name} and sex=#{sex}
+    </select>
+    <select id="selectByNameAndSex3" parameterType="map">
+        select * from t_student where name=#{name} and sex=#{sex}
+    </select>
+</mapper>

@@ -19,12 +19,9 @@ public class TestMybatis {
 
     @Test
     public void testMybatisSelectByCarNum(){
-        try(SqlSession sqlSession = SqlSessionUtil.openSession()) {
-            List<Car> cars= sqlSession.selectList("selectByCarNum", "津k88888");
-            System.out.println(cars);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
+        List<Car> cars = mapper.selectByCarNum("津k88888");
+        cars.forEach(System.out::println);
     }
 
     @Test
@@ -44,44 +41,38 @@ public class TestMybatis {
     }
     @Test
     public void testMybatisUpdateById() {
-        try (SqlSession sqlSession = SqlSessionUtil.openSession()) {
-            //修改id为7的记录的数据
-            Car car = new Car();
-            car.setId(7L);
-            car.setCarNum("莞B55558");
-            car.setBrand("红旗444");
-            car.setGuidePrice(new BigDecimal("35.50"));
-            car.setProduceTime("2024-12-24");
-            car.setCarType("新能源");
-            int count = sqlSession.update("updateById", car);
-            System.out.println(count==1?"成功更新"+count+"条记录":"更新数据失败");
-            //手动提交
-            sqlSession.commit();
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        Car car = new Car();
+        car.setId(7L);
+        car.setCarNum("莞B55558");
+        car.setBrand("暴龙555");
+        car.setGuidePrice(new BigDecimal("35.50"));
+        car.setProduceTime("2024-12-24");
+        car.setCarType("新能源");
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
+        int count = mapper.updateById(car); //这里不需要一个id作为参数，因为car对象里面就有id
+        System.out.println(count==1?"成功更新"+count+"条记录":"更新数据失败");
+        sqlSession.commit();
     }
     @Test
     public void testMybatisDeleteById() {
-        try (SqlSession sqlSession = SqlSessionUtil.openSession()) {
-            int count = sqlSession.delete("deleteById", 18);
-            System.out.println(count==1?"删除成功，删除了"+count+"条记录":"删除失败");
-            //提交事务
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
+         int count = mapper.deleteById(17);
+         System.out.println(count==1?"删除成功，删除了"+count+"条记录":"删除失败");
+         sqlSession.commit();
     }
 
     @Test
     public void testMybatisSelectById() {
-        try (SqlSession sqlSession = SqlSessionUtil.openSession()) {
-             Car car = sqlSession.selectOne("selectById", 14L);
-             System.out.println(car);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Car car = SqlSessionUtil.openSession().getMapper(CarMapper.class).selectById(1);
+        System.out.println(car);
+    }
+    @Test
+    public void testMybatisSelectByBrand() {
+        //根据品牌进行模糊查找
+//        List<Car> cars = SqlSessionUtil.openSession().getMapper(CarMapper.class).selectCarByBrand("田");
+        List<Car> cars = SqlSessionUtil.openSession().getMapper(CarMapper.class).selectCarByBrand2("田");
+        cars.forEach(System.out::println);
     }
 }

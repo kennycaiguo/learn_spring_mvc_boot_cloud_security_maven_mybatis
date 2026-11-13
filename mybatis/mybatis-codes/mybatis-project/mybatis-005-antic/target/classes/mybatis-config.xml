@@ -7,6 +7,15 @@
     <settings>
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
+    <!--
+       配置类型别名
+       在 MyBatis 中，框架本身不支持直接为 Mapper.xml 的 namespace（命名空间）配置别名。
+       MyBatis 仅在全局配置文件中提供 <typeAliases> 标签，用于为 Java 实体类起别名。
+    -->
+    <typeAliases>
+        <package name="org.kenny.mybatis.entity"/>
+    <!-- <typeAlias type="org.kenny.mybatis.entity.Car" alias="Car"/>-->
+    </typeAliases>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>

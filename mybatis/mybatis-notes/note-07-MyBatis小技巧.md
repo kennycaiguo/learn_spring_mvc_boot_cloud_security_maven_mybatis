@@ -502,3 +502,107 @@ public void testInsertUseGeneratedKeys(){
 ### 使用${}的场景
 
 ![image-20261112212731784](./note-07-MyBatis小技巧.assets/image-20261112212731784.png)
+
+# 项目演练2-模糊查询
+
+## 2.1还是上面的项目，我们添加一个根据品牌来查询汽车的测试代码，首先在CarMapper.xml需要添加sql语句
+
+![image-20261113111902828](./note-07-MyBatis小技巧.assets/image-20261113111902828.png)
+
+## 2.2,需要给CarMapper接口添加一个selectCarByBrand方法，只有方法名和sql语句的id必须一致。
+
+![image-20261113112035103](./note-07-MyBatis小技巧.assets/image-20261113112035103.png)
+
+## 2.3 然后我们编写一个测试代码
+
+![image-20261113112203661](./note-07-MyBatis小技巧.assets/image-20261113112203661.png)
+
+## 2.4运行测试，顺利通过
+
+![image-20261113112258026](./note-07-MyBatis小技巧.assets/image-20261113112258026.png)
+
+## 2.5模糊查询的写法2：
+
+![image-20261113114019663](./note-07-MyBatis小技巧.assets/image-20261113114019663.png)
+
+# 演练3.mybatis类型别名，把一个很长的类名映射为一个短类名
+
+## 3.1需要在mybatis-config.xml里面配置
+
+![image-20261113121422511](./note-07-MyBatis小技巧.assets/image-20261113121422511.png)
+
+### 注意：
+
+```
+在 MyBatis 中，框架本身不支持直接为 Mapper.xml 的 namespace（命名空间）配置别名。
+MyBatis 仅在全局配置文件中提供 <typeAliases> 标签，用于为 Java 实体类起别名。
+```
+
+## 3.2然后在CarMapper.xml中就可以把类型简写了
+
+![image-20261113122605174](./note-07-MyBatis小技巧.assets/image-20261113122605174.png)
+
+## 3.3测试通过
+
+![image-20261113122640253](./note-07-MyBatis小技巧.assets/image-20261113122640253.png)
+
+## 3.5还有更好的方法，就是指定包名，然后该包下面的所有类都会自动简化
+
+![image-20261113123252686](./note-07-MyBatis小技巧.assets/image-20261113123252686.png)
+
+## 3.6CarMapper.xml里面还是这么写
+
+![image-20261113123329352](./note-07-MyBatis小技巧.assets/image-20261113123329352.png)
+
+## 3.7运行测试，顺利通过
+
+![image-20261113123409043](./note-07-MyBatis小技巧.assets/image-20261113123409043.png)
+
+# 演练4.mybatis配置mapper的其他写法
+
+## 4.1 一共有种写法，不过，使用url发方式已经很少用，我们可以测试邮一下使用class的写法，我们把005项目复制一份改名XXX-005-antic2，然后在main/resources文件夹里面新建一个文件夹（注意：这里不是包，在resources文件夹里面应该）org/kenny/mybatis/mapper,把CarMapper.xml移动到他的里面，此时mapper接口的路径就会Mapper.xml的理解对应上了
+
+![image-20261113131802280](./note-07-MyBatis小技巧.assets/image-20261113131802280.png)
+
+## 4.2然后我们修改一下mybatis-config.xml，在mappers里面把mapper的属性从resource改为class
+
+![image-20261113132028222](./note-07-MyBatis小技巧.assets/image-20261113132028222.png)
+
+## 4.3 然后运行测试，发现顺利通过
+
+![image-20261113132206606](./note-07-MyBatis小技巧.assets/image-20261113132206606.png)
+
+### 
+
+## 4.4这种方式在我们有很多mapper接口的时候需要写多个映射，我们还有更好的写法，就是使用package,这个package的路径需要和mapper.xml的路径一致
+
+![image-20261113133238178](./note-07-MyBatis小技巧.assets/image-20261113133238178.png)
+
+## 4.5然后运行测试，发现顺利通过
+
+![image-20261113133320508](./note-07-MyBatis小技巧.assets/image-20261113133320508.png)
+
+### 注意，以后我们开发都使用这种方式，也就是使用package的方式
+
+# 演练5.插入数据时自动获取生成的主键
+
+## 5.1使用005-antic2项目，我们在mapper.xml文件里面添加一条sql语句，需要设置useGeneratedKeys为true并且指定接收主键的属性
+
+![image-20261113134925499](./note-07-MyBatis小技巧.assets/image-20261113134925499.png)
+
+## 5.2 然后在mapper接口里面声明这个方法
+
+![image-20261113135056764](./note-07-MyBatis小技巧.assets/image-20261113135056764.png)
+
+## 5.3 然后我们写应该测试方法
+
+![image-20261113135513947](./note-07-MyBatis小技巧.assets/image-20261113135513947.png)
+
+## 5.4运行测试，顺利通过，并且可以成功获取到id
+
+![image-20261113135612033](./note-07-MyBatis小技巧.assets/image-20261113135612033.png)
+
+![image-20261113135639670](./note-07-MyBatis小技巧.assets/image-20261113135639670.png)
+
+### 注意：这个功能以后可能要用到
+

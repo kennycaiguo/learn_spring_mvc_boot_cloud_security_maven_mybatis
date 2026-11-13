@@ -13,7 +13,13 @@
     <file url="file://$PROJECT_DIR$/mybatis-004-maven-web/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-005-antic/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-005-antic/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-005-antic2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-005-antic2/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-005-dynamic-dao-impl/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-005-dynamic-dao-impl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-006-param/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-006-param/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-007-select/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-007-select/src/main/resources" charset="UTF-8" />
   </component>
 </project>

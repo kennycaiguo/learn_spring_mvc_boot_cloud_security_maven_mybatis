@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kenny.mybatis.mapper.CarMapper">
+    <!--insert sql：保存一个汽车信息-->
+    <!--
+       可用标签，insert,update,delete,select
+       在mapper文件中，sql语句可用不用;结尾
+    -->
+   <select id="selectById" resultType="java.util.Map" parameterType="long">
+       select * from t_car where id=#{id}
+   </select>
+    <select id="selectByCarNum" resultType="map">
+        select * from t_car where car_num=#{carNum}
+    </select>
+    <select id="selectAllRetMap" resultType="map">
+        select id,car_num,brand,guide_price,produce_time,car_type from t_car
+    </select>
+    <select id="selectAllRetMap2" resultType="Car">
+        select id,car_num,brand,guide_price,produce_time,car_type from t_car
+    </select>
+</mapper>

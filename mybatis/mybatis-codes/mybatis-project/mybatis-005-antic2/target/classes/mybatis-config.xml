@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--开启mybatis日志功能-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <!--
+       配置类型别名
+       在 MyBatis 中，框架本身不支持直接为 Mapper.xml 的 namespace（命名空间）配置别名。
+       MyBatis 仅在全局配置文件中提供 <typeAliases> 标签，用于为 Java 实体类起别名。
+    -->
+    <typeAliases>
+         <!--指定包名，该包下面的类就可以使用简化类名-->
+        <package name="org.kenny.mybatis.entity"/>
+    <!-- <typeAlias type="org.kenny.mybatis.entity.Car" alias="Car"/>-->
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--sql映射文件创建好之后，需要将该文件路径配置到这里
+            mapper的resource属性是从类的根路径开始查找的，而在maven项目中，resources目录就是类的根路径
+            这里使用class的映射，方法，前提是mapper文件和接口文件的基本名一样，并且接口的包名和mapper.xml的路径对应上
+        -->
+    <!--<mapper class="org.kenny.mybatis.mapper.CarMapper"/>-->
+        <package name="org.kenny.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

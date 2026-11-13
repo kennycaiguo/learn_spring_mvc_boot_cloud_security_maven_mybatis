@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--namespace先随意写一个-->
+
 <mapper namespace="org.kenny.mybatis.mapper.CarMapper">
     <!--insert sql：保存一个汽车信息-->
     <!--
        可用标签，insert,update,delete,select
        在mapper文件中，sql语句可用不用;结尾
     -->
-    <insert id="insertCar" parameterType="org.kenny.mybatis.entity.Car">
+    <insert id="insertCar" parameterType="Car">
         insert into t_car
             (id,car_num,brand,guide_price,produce_time,car_type)
         values
             (null,#{carNum},#{brand},#{guidePrice},#{produceTime},#{carType})
     </insert>
-    <select id="selectAllByTableName" parameterType="string" resultType="org.kenny.mybatis.entity.Car">
+    <select id="selectAllByTableName" parameterType="string" resultType="Car">
         select
             id,car_num as carNum,brand,guide_price as guidePrice,produce_time as produceTime,car_type as carType
         from
@@ -36,6 +36,25 @@
             t_car
         where
             id=#{id}
+    </select>
+   <!--实现根据汽车的品牌来进行模糊查找-->
+    <select id="selectCarByBrand" resultType="Car" parameterType="string">
+        select
+            id,car_num as carNum,brand,guide_price as guidePrice,produce_time as produceTime,car_type as carType
+        from
+            t_car
+        where
+            brand like concat('%',#{brand},'%')
+
+    </select>
+    <select id="selectCarByBrand2" resultType="Car" parameterType="string">
+                select
+            id,car_num as carNum,brand,guide_price as guidePrice,produce_time as produceTime,car_type as carType
+        from
+            t_car
+        where
+            brand like "%"#{brand}"%"
+
     </select>
     <update id="updateById">
         update

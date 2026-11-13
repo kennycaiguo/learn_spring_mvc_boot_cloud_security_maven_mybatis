@@ -7,11 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mybatis-004-maven-web-dynamic-dao-impl" />
-        <module name="mybatis-001-introduction" />
+        <module name="mybatis-006-param" />
         <module name="mybatis-005-antic" />
+        <module name="mybatis-004-maven-web" />
+        <module name="mybatis-005-antic2" />
+        <module name="mybatis-001-introduction" />
+        <module name="mybatis-007-select" />
         <module name="mybatis-002-crud" />
         <module name="mybatis-003-configuration" />
-        <module name="mybatis-004-maven-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

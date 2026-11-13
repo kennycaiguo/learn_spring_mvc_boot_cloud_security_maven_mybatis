@@ -9,11 +9,14 @@ public interface CarMapper {
 
     public int insertCar(Car car);
 
-    public int updateById(int id,Car car);
+    public int updateById(Car car);
 
     public List<Car> selectByCarNum(String carNum);
 
     public int deleteById(int id);
 
     public Car selectById(int id);
+
+    List<Car> selectCarByBrand(String brand);
+    List<Car> selectCarByBrand2(String brand);
 }
