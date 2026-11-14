@@ -6,6 +6,8 @@
     <!--开启mybatis日志功能-->
     <settings>
         <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--开启驼峰命名自动映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <!--
        配置类型别名

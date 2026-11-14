@@ -4,11 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kenny.mybatis.mapper.CarMapper">
-    <!--insert sql：保存一个汽车信息-->
-    <!--
-       可用标签，insert,update,delete,select
-       在mapper文件中，sql语句可用不用;结尾
-    -->
+    
+    <!--resultMap的使用把数据表的列名和实体对象的属性名对应起来-->
+<!--    <resultMap id="carResultMap" type="Car">-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="car_num" property="carNum" javaType="String" jdbcType="VARCHAR"/>-->
+<!--        <result column="brand" property="brand"/>-->
+<!--        <result column="guide_price" property="guidePrice"/>-->
+<!--        <result column="produce_time" property="produceTime"/>-->
+<!--        <result column="car_type" property="carType"/>-->
+<!--    </resultMap>-->
+<!--    &lt;!&ndash;insert sql：保存一个汽车信息&ndash;&gt;-->
+<!--    &lt;!&ndash;-->
+<!--       可用标签，insert,update,delete,select-->
+<!--       在mapper文件中，sql语句可用不用;结尾-->
+<!--    &ndash;&gt;-->
+<!--   &lt;!&ndash;测试resultMap是否好用&ndash;&gt;-->
+<!--   <select id="mappedSelectById" resultMap="carResultMap">-->
+<!--       select id,car_num,brand,guide_price,produce_time,car_type from t_car where id=#{id}-->
+<!--   </select>-->
+
+    <select id="selectAllToCamelCase" resultType="Car">
+        select * from t_car
+    </select>
    <select id="selectById" resultType="java.util.Map" parameterType="long">
        select * from t_car where id=#{id}
    </select>
@@ -20,5 +38,9 @@
     </select>
     <select id="selectAllRetMap2" resultType="Car">
         select id,car_num,brand,guide_price,produce_time,car_type from t_car
+    </select>
+    <!--查询总记录条数-->
+    <select id="selectTotalCount" resultType="long">
+        select count(*) from t_car
     </select>
 </mapper>

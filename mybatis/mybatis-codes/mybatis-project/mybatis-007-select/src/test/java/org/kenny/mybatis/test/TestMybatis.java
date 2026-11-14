@@ -44,4 +44,25 @@ public class TestMybatis {
             System.out.println(k +":"+v);
         });
     }
+//    @Test
+//    public void testMybatisMappedSelectByid() {
+//        CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
+//        Car car = mapper.mappedSelectById(2L);
+//        System.out.println(car);
+//    }
+    @Test
+    public void  testSelectAllToCamelCase(){
+        CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
+        Map<Long, Car> cars = mapper.selectAllToCamelCase();
+        cars.forEach((k,v)->{
+            System.out.println(k +":"+v);
+        });
+    }
+
+    @Test
+    public void testMybatisSelectTotalCount(){
+        CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
+        Long count = mapper.selectTotalCount();
+        System.out.println("总记录条数："+count);
+    }
 }

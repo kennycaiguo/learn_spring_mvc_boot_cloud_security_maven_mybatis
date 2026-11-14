@@ -13,4 +13,13 @@ public interface CarMapper {
     Map<Long, Map<String, Object>> selectAllRetMap();
     @MapKey("id")
     Map<Long, Car> selectAllRetMap2();
+    //测试resultMap
+    Car mappedSelectById(Long id);
+    //测试下划线转驼峰
+    @MapKey("id")
+    Map<Long, Car> selectAllToCamelCase();
+    //返回总记录条数
+    Long selectTotalCount();
 }
+
+//

@@ -494,3 +494,113 @@ public void testSelectTotal(){
 ## 1.18运行测试，顺利通过
 
 ![image-20261113173448490](./note-09-MyBatis查询语句.assets/image-20261113173448490.png)
+
+
+
+# 项目演练2.resultMap的使用
+
+## 2.1resultMap有什么用，它是用来解决实体类的字段和数据库的列名不一致的问题
+
+## 2.2还是上面的项目，我们CarMapper.xml里面添加一个resultMap标签
+
+![image-20261113192503874](./note-09-MyBatis查询语句.assets/image-20261113192503874.png)
+
+## 2.3 我们在CarMapper.xml里面添加一个查询语句id="mappedSelectById"
+
+![image-20261113195046047](./note-09-MyBatis查询语句.assets/image-20261113195046047.png)
+
+## 2.4然后我们在mapper接口里面新建一个方法，名称和sql语句的id一致
+
+![image-20261113193137646](./note-09-MyBatis查询语句.assets/image-20261113193137646.png)
+
+## 2.5 然后我们写一个测试方法testMybatisMappedSelectByid
+
+![image-20261113193330588](./note-09-MyBatis查询语句.assets/image-20261113193330588.png)
+
+## 2.6 我们先回答mapper.xml把resultMap的代码注释，同时改为resultType
+
+![image-20261113193438462](./note-09-MyBatis查询语句.assets/image-20261113193438462.png)
+
+## 2.7运行测试代码，你会发现，默认情况下，凡是列名和字段名称不一致的属性，就获取不到值
+
+![image-20261113193638086](./note-09-MyBatis查询语句.assets/image-20261113193638086.png)
+
+## 2.8 然后我们回答CarMapper.xml，把resultMap取消注释
+
+![image-20261113194451606](./note-09-MyBatis查询语句.assets/image-20261113194451606.png)
+
+## 2.9再次运行测试代码，顺利通过，所有的属性都拿到值了
+
+![image-20261113195249646](./note-09-MyBatis查询语句.assets/image-20261113195249646.png)
+
+## 其实这里只会获取到一个数据，我们可以把它的返回值修改一下
+
+![image-20261113195445669](./note-09-MyBatis查询语句.assets/image-20261113195445669.png)
+
+![image-20261113195531258](./note-09-MyBatis查询语句.assets/image-20261113195531258.png)
+
+### 注意，使用了resultMap后，就不能够再添加resultType属性了，也就是他们不能同时使用
+
+## 其实resultMap不是必须的，我们有几种选择，可以查询数据的时候，给列起名属性名作为别名，也可以把实体类的属性和数据表的列名都使用相同的名字。个人认为列名和实体类的属性名一致是最好的。
+
+## resultMap的最佳使用场景是一对多或者多对一的场景，或者需要做高级映射的场景。
+
+# 演练3.驼峰命名法自动映射
+
+## 3.1前面我们以及学习了当数据表的列名和实体类的属性名称不一致时的2种处理方法，select xx as yy 。。。 和使用resultMap，这里我们有第三种选择，配置驼峰命名法自动映射，这种方法可能是以后经常用的方法
+
+## 3.2如果先使用驼峰命名法自动映射需要满足几个条件：
+
+### 3.2.1数据库中的列命名要遵循命名规范
+
+#### ①列名全部使用小写字母
+
+#### ②单词之间用下划线连接
+
+### 3.2.2 java实体类中的属性名的命名也要要遵循命名规范
+
+#### ①首字母小写
+
+#### ②从第二个单词开始每个单词的首字母大写
+
+## 3.3这个配置必须在mybatis-config.xml里面用settings标签来配置
+
+![image-20261113202416925](./note-09-MyBatis查询语句.assets/image-20261113202416925.png)
+
+## 3.4 然后我们在我们的mybatis-config.xml里面配置一下
+
+![image-20261113203258979](./note-09-MyBatis查询语句.assets/image-20261113203258979.png)
+
+## 3.5然后我们在CarMapper.xml里面添加一个select语句，id为selectAllToCamelCase,并且把前面的resultMap的代码注释了
+
+![image-20261113203613218](./note-09-MyBatis查询语句.assets/image-20261113203613218.png)
+
+## 3.6 然后我们在mapper接口里面添加一个selectAllToCamelCase方法
+
+![image-20261113203815896](./note-09-MyBatis查询语句.assets/image-20261113203815896.png)
+
+## 3.7 然后我们在测试类里面添加一个testSelectAllToCamelCase
+
+![image-20261113204118710](./note-09-MyBatis查询语句.assets/image-20261113204118710.png)
+
+## 3.8运行测试，顺利通过
+
+![image-20261113204203913](./note-09-MyBatis查询语句.assets/image-20261113204203913.png)
+
+# 演练4.返回总记录条数
+
+## 4.1还是上面的项目，我们在mapper接口里面添加一个方法：selectTotalCount
+
+![image-20261113205503942](./note-09-MyBatis查询语句.assets/image-20261113205503942.png)
+
+## 4.2然后在CarMapper.xml里面添加一个sql语句，id为：selectTotalCount
+
+![image-20261113205730494](./note-09-MyBatis查询语句.assets/image-20261113205730494.png)
+
+## 4.3然后我们添加一个测试方法：testMybatisSelectTotalCount
+
+![image-20261113205954542](./note-09-MyBatis查询语句.assets/image-20261113205954542.png)
+
+## 4.4运行测试，顺利通过
+
+![image-20261113210021169](./note-09-MyBatis查询语句.assets/image-20261113210021169.png)
