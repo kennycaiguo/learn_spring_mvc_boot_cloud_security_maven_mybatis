@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kenny.mybatis.mapper.CarMapper">
+
+        <!--多条件查询-->
+<!--       <select id="selectByCondition" resultType="Car" parameterType="map">-->
+<!--           select * from t_car where-->
+<!--           <if test="brand != null and brand != ''">-->
+<!--               brand like "%"#{brand}"%"-->
+<!--           </if>-->
+<!--           <if test="guidePrice != null and guidePrice != ''">-->
+<!--               and guide_price >=#{guidePrice}-->
+<!--           </if>-->
+<!--           <if test="carType != null and carType != ''">-->
+<!--               and car_type =#{carType}-->
+<!--           </if>-->
+<!--       </select>-->
+    <select id="selectByCondition" resultType="Car" parameterType="map">
+        select * from t_car where
+        <if test="brand != null and brand != ''">
+            brand like "%"#{brand}"%"
+        </if>
+        <if test="guidePrice != null and guidePrice != ''">
+            and guide_price >=#{guidePrice}
+        </if>
+        <if test="carType != null and carType != ''">
+            and car_type =#{carType}
+        </if>
+    </select>
+    <select id="selectByConditionWithWhere" resultType="Car" parameterType="map">
+        select * from t_car
+        <where>
+            <if test="brand != null and brand != ''">
+               brand like "%"#{brand}"%"
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                and guide_price >=#{guidePrice}
+            </if>
+            <if test="carType != null and carType != ''">
+                and car_type =#{carType}
+            </if>
+        </where>
+
+    </select>
+    <select id="selectByConditionWithTrim" resultType="Car" parameterType="map">
+        select * from t_car
+        <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR">
+            <if test="brand != null and brand != ''">
+               brand like "%"#{brand}"%"
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                and guide_price >=#{guidePrice}
+            </if>
+            <if test="carType != null and carType != ''">
+                and car_type =#{carType}
+            </if>
+        </trim>
+
+    </select>
+</mapper>

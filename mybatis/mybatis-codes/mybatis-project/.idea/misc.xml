@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/mybatis-005-antic2/pom.xml" />
         <option value="$PROJECT_DIR$/mybatis-006-param/pom.xml" />
         <option value="$PROJECT_DIR$/mybatis-007-select/pom.xml" />
+        <option value="$PROJECT_DIR$/mybatis-008-dynamic-sql/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

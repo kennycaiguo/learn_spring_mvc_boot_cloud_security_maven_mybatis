@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mybatis-008-dynamic-sql" />
         <module name="mybatis-004-maven-web-dynamic-dao-impl" />
         <module name="mybatis-006-param" />
         <module name="mybatis-005-antic" />
