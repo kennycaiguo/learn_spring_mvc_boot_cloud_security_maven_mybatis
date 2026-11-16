@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kenny.mybatis.mapper.StudentMapper">
+<!--    <resultMap id="studentResultMap" type="Student">-->
+<!--        <id property="sid" column="sid" />-->
+<!--        <result property="sname" column="sname" />-->
+<!--        &lt;!&ndash;第1种封装方法，级联属性手动封装&ndash;&gt;-->
+<!--                <result property="clazz.cid" column="cid" />-->
+<!--                <result property="clazz.cname" column="cname" />-->
+<!--    </resultMap>-->
+    <resultMap id="studentResultMap" type="Student">
+        <id property="sid" column="sid" />
+        <result property="sname" column="sname" />
+        <!--第2种封装方法，级联使用-->
+        <association property="clazz">
+            <id property="cid" column="cid"/>
+            <result property="cname" column="cname" />
+        </association>
+    </resultMap>
+   <!--联表查询-->
+   <select id="selectBySid" resultMap="studentResultMap">
+      select
+            s.sid,s.sname,c.cid,c.cname
+      from
+            t_student s
+      join
+           t_clazz c
+      on
+           s.cid=c.cid
+      where
+           s.sid=#{sid}
+   </select>
+
+
+</mapper>

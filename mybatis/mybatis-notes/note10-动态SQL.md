@@ -551,9 +551,9 @@ int insertBatchByForeach(@Param("cars") List<Car> cars);
 @Test
 public void testInsertBatchByForeach(){
     CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
-    Car car1 = new Car(null, "2001", "兰博基尼", 100.0, "1998-10-11", "燃油车");
-    Car car2 = new Car(null, "2001", "兰博基尼", 100.0, "1998-10-11", "燃油车");
-    Car car3 = new Car(null, "2001", "兰博基尼", 100.0, "1998-10-11", "燃油车");
+    Car car1 = new Car(null, "SK2001", "兰博基尼S", new BigDecimal("20.0"), "1998-10-11", "电车");
+    Car car2 = new Car(null, "SK2002", "兰博基尼M", new BigDecimal("30.0"), "1998-09-11", "新能源");
+    Car car3 = new Car(null, "SK2003", "兰博基尼L", new BigDecimal("40.0"), "1998-08-11", "燃油车");
     List<Car> cars = Arrays.asList(car1, car2, car3);
     int count = mapper.insertBatchByForeach(cars);
     System.out.println("插入了几条记录" + count);
@@ -696,3 +696,110 @@ include标签用来将声明的sql片段包含到某个sql语句当中
 ![image-20261114201752693](./note10-动态SQL.assets/image-20261114201752693.png)
 
 ## trim标签用的比较少，但是还是需要学习的。
+
+# 演练4，set标签专门给update语句用的
+
+## 4.1给CarMapper接口添加一个updateWithSet方法
+
+![image-20261115104334668](./note10-动态SQL.assets/image-20261115104334668.png)
+
+## 4.2然后在mapper.xml中添加一条sql语句，id=updateWithSet
+
+![image-20261115104523103](./note10-动态SQL.assets/image-20261115104523103.png)
+
+## 4.3然后我们添加一个测试方法：testUpdateBySet，我们先设置所有字段
+
+![image-20261115104619676](./note10-动态SQL.assets/image-20261115104619676.png)
+
+## 4.4运行测试，顺利通过更新成功
+
+![image-20261115104951081](./note10-动态SQL.assets/image-20261115104951081.png)
+
+![image-20261115104908430](./note10-动态SQL.assets/image-20261115104908430.png)
+
+## 4.5 然后我们尝试只更新其中几个
+
+![image-20261115105207767](./note10-动态SQL.assets/image-20261115105207767.png)
+
+## 4.6 测试通过，更新成功
+
+![image-20261115105405971](./note10-动态SQL.assets/image-20261115105405971.png)
+
+![image-20261115105515664](./note10-动态SQL.assets/image-20261115105515664.png)
+
+## 4.7可见，使用set标签也是挺灵活的，它可以除去多余的逗号，既可以更新全部列数据，有可以更新局部列数据，它主要解决sql在set语句不够灵活的问题，如果你不使用set标签，并且你只给新对象数据设置了一两个属性，那么其他属性就默认为空，这是不对的。
+
+# 演练5.choose-when-otherwise
+
+## 5.1这几个标签必须一起使用，应用场景场景是在列出的条件中哪个为true就使用哪个作为查询条件，也就是用在where子句后面作为条件，注意：只有一个分支有机会被使用。
+
+## 5.2 给mapper接口添加一个selectWithChoose方法
+
+![image-20261115120203377](./note10-动态SQL.assets/image-20261115120203377.png)
+
+## 5.3然后在CarMapper.xml中添加一条select语句，id为selectWithChoose
+
+![image-20261115123911690](./note10-动态SQL.assets/image-20261115123911690.png)
+
+## 5.4然后我们添加一个测试方法：testSelectWithChoose,我们先只给id赋值，运行测试顺利通过
+
+![image-20261115125231354](./note10-动态SQL.assets/image-20261115125231354.png)
+
+## 5.5然后我们修改一下代码，只赋值给车牌号，顺利通过
+
+![image-20261115143707457](./note10-动态SQL.assets/image-20261115143707457.png)
+
+## 5.6那么如果我们提供所有的属性值，然后会怎么样呢。此时会按照id来查询，因为他的运行顺序就是先看id，如果id有值，就不会看后面的。以此类推
+
+![image-20261115144131889](./note10-动态SQL.assets/image-20261115144131889.png)
+
+## 当然，还可以把它套在一个where标签里面
+
+![image-20261115145820060](./note10-动态SQL.assets/image-20261115145820060.png)
+
+# 演练6(重要).foreach标签
+
+## 6.1该标签的主要作用是批量插入数据或者批量删除数据，我们在mapper.xml里面添加一条批量删除sql
+
+![image-20261115154158924](./note10-动态SQL.assets/image-20261115154158924.png)
+
+## 6.2然后我们在mapper接口里面添加一个deleteByForeach方法
+
+![image-20261115154259859](./note10-动态SQL.assets/image-20261115154259859.png)
+
+## 6.3然后我们在测试类里面添加一个testDeleteByForeach方法，运行程序，顺利通过
+
+![image-20261115154423688](./note10-动态SQL.assets/image-20261115154423688.png)
+
+![image-20261115154514616](./note10-动态SQL.assets/image-20261115154514616.png)
+
+## 6.4然后我们来实现批量添加，先在mapper.xml文件里面添加一条insert语句，id为insertByForeach
+
+![image-20261115155153014](./note10-动态SQL.assets/image-20261115155153014.png)
+
+## 6.5然后我们在mapper接口里面添加一个insertByForeach方法
+
+![image-20261115155337738](./note10-动态SQL.assets/image-20261115155337738.png)
+
+## 6.6然后我们在测试类里面添加一个testInsetByForeach方法
+
+![image-20261115160005790](./note10-动态SQL.assets/image-20261115160005790.png)
+
+## 6.7运行测试，顺利通过
+
+![image-20261115160054303](./note10-动态SQL.assets/image-20261115160054303.png)
+
+# 演练7.sql标签和include
+
+## 7.1好处是让运行sql语句可以复用。我们在CarMapper.xml里面设置一个sql标签，写入t_car数据表的所有列名。然后新建一个select标签，在里面用include标签通过id来导入sql标签的列。
+
+![image-20261115171153597](./note10-动态SQL.assets/image-20261115171153597.png)
+
+## 7.2然后我们在mapper接口里面添加一个方法：selectAllInclude
+
+![image-20261115171248951](./note10-动态SQL.assets/image-20261115171248951.png)
+
+## 7.3然后我们在测试类里面添加一个testSelectAllInclude方法，运行测试，顺利通过。
+
+![image-20261115171410919](./note10-动态SQL.assets/image-20261115171410919.png)
+

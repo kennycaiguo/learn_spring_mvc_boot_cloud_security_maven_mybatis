@@ -19,7 +19,7 @@
 <!--           </if>-->
 <!--       </select>-->
     <select id="selectByCondition" resultType="Car" parameterType="map">
-        select * from t_car where
+        select <include refid="carCols" /> from t_car where
         <if test="brand != null and brand != ''">
             brand like "%"#{brand}"%"
         </if>
@@ -60,4 +60,71 @@
         </trim>
 
     </select>
+    <!--set标签动态sql，专门给update语句使用-->
+    <update id="updateWithSet" parameterType="Car">
+        update t_car
+        <set>
+            <if test="carNum!=null and carNum!=''">car_num=#{carNum},</if>
+            <if test="brand!=null and brand!=''">brand=#{brand},</if>
+            <if test="guidePrice != null and guidePrice != ''">guide_price=#{guidePrice},</if>
+            <if test="produceTime!=null and produceTime!=''">produce_time=#{produceTime},</if>
+            <if test="carType!=null and carType!=''">car_type=#{carType},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--从多个分支中选择一个-->
+    <select id="selectWithChoose" parameterType="Car">
+        select * from
+                     t_car
+         where
+         <choose>
+             <when test="id!=null and id!=''">id=#{id}</when>
+             <when test="carNum !=null and carNum!=''">car_num=#{carNum}</when>
+             <when test="brand !=null and brand!=''">brand like concat('%',#{brand},'%')</when>
+             <when test="guidePrice !=null and guidePrice!=''">guide_price>=#{guidePrice}</when>
+             <when test="produceTime !=null and produceTime!=''">prodeuce_time=#{produceTime}</when>
+             <otherwise>car_type=#{carType}</otherwise>
+         </choose>
+
+
+    </select>
+    <select id="selectWithChoose2" parameterType="Car">
+        select * from t_car
+         <where>
+             <choose>
+                 <when test="id!=null and id!=''">id=#{id}</when>
+                 <when test="carNum !=null and carNum!=''">car_num=#{carNum}</when>
+                 <when test="brand !=null and brand!=''">brand like concat('%',#{brand},'%')</when>
+                 <when test="guidePrice !=null and guidePrice!=''">guide_price>=#{guidePrice}</when>
+                 <when test="produceTime !=null and produceTime!=''">prodeuce_time=#{produceTime}</when>
+                 <otherwise>car_type=#{carType}</otherwise>
+             </choose>
+         </where>
+
+    </select>
+    <!--批量删除-->
+    <delete id="deleteByForeach">
+        delete from t_car where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </delete>
+    <!--批量添加-->
+    <insert id="insertByForeach">
+        insert into t_car values
+        <foreach collection="cars" item="car" separator=",">
+            (null,#{car.carNum},#{car.brand},#{car.guidePrice},#{car.produceTime},#{car.carType})
+        </foreach>
+    </insert>
+
+   <!--sql标签和include标签，实现代码复用    -->
+    <sql id="carCols">
+        id,car_num,brand,guide_price,produce_time,car_type
+    </sql>
+    <select id="selectAllInclude">
+        select <include refid="carCols" /> from t_car
+    </select>
+
 </mapper>
