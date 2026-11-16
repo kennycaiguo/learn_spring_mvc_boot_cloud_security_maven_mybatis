@@ -3,11 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--开启mybatis日志功能-->
     <settings>
+        <!--开启mybatis日志功能-->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
         <!--开启驼峰命名自动映射-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--开启全局懒加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
     </settings>
     <!--
        配置类型别名

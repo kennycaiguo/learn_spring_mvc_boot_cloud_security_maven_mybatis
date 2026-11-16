@@ -14,4 +14,11 @@ public class TestMybatis {
         Student student = mapper.selectBySid(1);
         System.out.println(student);
     }
+    @Test
+    public void selectStudentAndClazzBySid(){
+        StudentMapper mapper = SqlSessionUtil.openSession().getMapper(StudentMapper.class);
+        Student student = mapper.selectStudentAndClazzBySid(1);
+        System.out.println(student.getSname());
+//        System.out.println(student.getClazz().getCname());
+    }
 }

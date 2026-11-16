@@ -10,28 +10,46 @@
 <!--                <result property="clazz.cid" column="cid" />-->
 <!--                <result property="clazz.cname" column="cname" />-->
 <!--    </resultMap>-->
-    <resultMap id="studentResultMap" type="Student">
+    <!--第2种封装方法，级联使用-->
+<resultMap id="studentResultMap" type="Student">
+    <id property="sid" column="sid" />
+    <result property="sname" column="sname" />
+    <!--第2种封装方法，级联使用-->
+    <association property="clazz">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname" />
+    </association>
+</resultMap>
+
+<!--联表查询-->
+<select id="selectBySid" resultMap="studentResultMap">
+    select
+    s.sid,s.sname,c.cid,c.cname
+    from
+    t_student s
+    join
+    t_clazz c
+    on
+    s.cid=c.cid
+    where
+    s.sid=#{sid}
+</select>
+
+
+   <!--第3种方法，分步查询不能使用上面的sql语句，支持懒加载-->
+    <resultMap id="studentResultMapStep" type="Student">
         <id property="sid" column="sid" />
         <result property="sname" column="sname" />
-        <!--第2种封装方法，级联使用-->
-        <association property="clazz">
-            <id property="cid" column="cid"/>
-            <result property="cname" column="cname" />
-        </association>
-    </resultMap>
-   <!--联表查询-->
-   <select id="selectBySid" resultMap="studentResultMap">
-      select
-            s.sid,s.sname,c.cid,c.cname
-      from
-            t_student s
-      join
-           t_clazz c
-      on
-           s.cid=c.cid
-      where
-           s.sid=#{sid}
-   </select>
+       <!--在关联标签里面添加一个select属性，属性值是另外一个ClazzMapper的一条select语句的id-->
+        <association property="clazz" select="org.kenny.mybatis.mapper.ClazzMapper.selectClazzByCid"
+                     column="cid" fetchType="eager"/>
 
+    </resultMap>
+
+    <!--使用分步查询的resultMap的sql语句-->
+    <select id="selectStudentAndClazzBySid" resultMap="studentResultMapStep">
+       <!--第一步，只查询学生信息 -->
+        select sid,sname,cid from t_student where sid=#{sid}
+    </select>
 
 </mapper>

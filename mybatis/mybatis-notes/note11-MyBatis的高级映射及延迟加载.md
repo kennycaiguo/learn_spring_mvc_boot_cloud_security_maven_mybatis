@@ -678,5 +678,56 @@ public class Clazz {
 
 ![image-20261115191630492](./note11-MyBatis的高级映射及延迟加载.assets/image-20261115191630492.png)
 
-## 1.14还有第三种方法，比较麻烦。可以参考上面的代码
+## 1.14还有第三种方法,叫做分步查询。这个方法比较常用是因为它支持延迟加载。好处就是可以提高效率，我们在mapper接口里面新建一个方法：selectStudentAndClazzBySid
 
+![image-20261116091705415](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116091705415.png)
+
+## 1.15然后我们新建一个resultMap，id为：studentResultMapStep，然后我们的sql语句的id为：selectStudentAndClazzBySid，注意这里只需要进行t_student数据表的单表查询，然后我们在resultMap标签里面写和方法2类似的代码但是需要注意，此时不需要JavaType属性，并且在关联标签里面需要一条select属性，在这里导入一个配置文件的select语句的id,需要设置column属性这里是cid，在这里查询学生关联的班级信息，我们把这一条语句写到ClazzMapper.xml中,，当然，我们需要一步步来完成，先写StudentMapper.xml里面的语句。
+
+![image-20261116112303006](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116112303006.png)
+
+## 1.16然后我们需要创建一个ClazzMapper接口和一个ClazzMapper.xml配置文件，在ClazzMapper接里面添加一个方法：selectClazzByCid
+
+![image-20261116112450634](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116112450634.png)
+
+## 1.17然后我们在ClazzMapper.xml文件里面添加ClazzMapper接口的命名空间映射，标签添加一个select标签，id是selectClazzByCid
+
+![image-20261116112650147](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116112650147.png)
+
+## 1.18.这样子，就基本完成，但是此时还没有开启懒加载。我们在测试类里面添加一个测试方法：selectStudentAndClazzBySid，然后运行顺利通过，不过此时我们可以看到它是由2条sql语句的，也就是分步骤了。
+
+![image-20261116113209888](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116113209888.png)
+
+![image-20261116113148170](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116113148170.png)
+
+## 1.19要开启懒加载的话，需要在association里面设置一个fetchType="lazy"
+
+![image-20261116113439800](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116113439800.png)
+
+## 1.20此时在测试方法里面，如果我们还是输出整个学生信息，效果和没有lazy是一样的，但是如果我们不输出班级信息，它是不会查询班级信息的。
+
+![image-20261116113933669](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116113933669.png)
+
+## 1.21然后我们来输出一下班级学习，此时它就会查询班及表
+
+![image-20261116114204974](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116114204974.png)
+
+## 1.22其实我们可以配置全局懒加载，需要在mybatis-config.xml里面的settings标签里面配置
+
+![image-20261116120725987](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116120725987.png)
+
+## 1.23然后就可以把在局部配置的懒加载删除
+
+![image-20261116120835864](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116120835864.png)
+
+## 1.24测试一下，也是可以通过的
+
+![image-20261116120954458](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116120954458.png)
+
+## 1.25注意，可能由一种场景就是虽然我们全局设置懒加载，但是某一条sql语句我们想让他马上加载，我们可以在条sql里面设置fetchType="eager"
+
+![image-20261116143017165](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116143017165.png)
+
+## 1.26此时即使你没有使用到Clazz的属性，它也会一起查询
+
+![image-20261116143200892](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116143200892.png)
