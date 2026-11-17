@@ -1,5 +1,7 @@
 # MyBatis的逆向工程
 
+## 注意，这一章作为了解即可，因为idea工具的MybatisX插件就有逆向工程能力，我们后面会经常使用这个插件来做逆向工程
+
 所谓的逆向工程是：根据数据库表逆向生成Java的pojo类，SqlMapper.xml文件，以及Mapper接口类等。
 
 要完成这个工作，需要借助别人写好的逆向工程插件。
@@ -204,4 +206,116 @@ public class GeneratorTest {
 }
 
 ```
+
+# 演练1
+
+## 1.把10项目拷贝一份，改名mybatis-011-generator，然后把target文件夹删除，修改项目名称，并且添加为maven项目
+
+![image-20261117154914054](./note13-MyBatis的逆向工程.assets/image-20261117154914054.png)
+
+## 2.把CarMapper接口和xml文件删除，把Car类也删除
+
+![image-20261117155129467](./note13-MyBatis的逆向工程.assets/image-20261117155129467.png)
+
+## 3.把测试类的所有方法也删除了
+
+![image-20261117155233978](./note13-MyBatis的逆向工程.assets/image-20261117155233978.png)
+
+## 4.在pom.xml文件里面添加一个mybatis-generator-maven-plugin插件，注意在build>plugins>里面
+
+![image-20261117160026442](./note13-MyBatis的逆向工程.assets/image-20261117160026442.png)
+
+## 5.此时你在右边的maven面板上11项目的插件文件夹里面库看到这个插件，需要使用的时候，只需要双击这个插件里面的generate项即可
+
+![image-20261117160316528](./note13-MyBatis的逆向工程.assets/image-20261117160316528.png)
+
+## 6.然后我们需要写一个generatorConfig.xml文件，放在类的根目录下面，也就是maven项目的main/resources文件夹
+
+![image-20261117162553307](./note13-MyBatis的逆向工程.assets/image-20261117162553307.png)
+
+### generatorConfig.xml的内容如下
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--
+        targetRuntime有两个值：
+            MyBatis3Simple：生成的是基础版，只有基本的增删改查。
+            MyBatis3：生成的是增强版，除了基本的增删改查之外还有复杂的增删改查。
+    -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--防止生成重复代码-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+
+        <commentGenerator>
+            <!--是否去掉生成日期-->
+            <property name="suppressDate" value="true"/>
+            <!--是否去除注释-->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--连接数据库信息-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mybatis"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!-- 生成entity包名和位置 -->
+        <javaModelGenerator targetPackage="org.kenny.mybatis.entity" targetProject="src/main/java">
+            <!--是否开启子包-->
+            <property name="enableSubPackages" value="true"/>
+            <!--是否去除字段名的前后空白-->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成SQL映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="org.kenny.mybatis.mapper" targetProject="src/main/resources">
+            <!--是否开启子包-->
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成Mapper接口的包名和位置 -->
+        <javaClientGenerator
+                type="xmlMapper"
+                targetPackage="org.kenny.mybatis.mapper"
+                targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 表名和对应的实体类名,可以写多个-->
+        <table tableName="t_car" domainObjectName="Car"/>
+
+
+    </context>
+</generatorConfiguration>
+```
+
+## 7.然后就可以运行插件，在generate上面双击
+
+![image-20261117162820492](./note13-MyBatis的逆向工程.assets/image-20261117162820492.png)
+
+## 8.生成成功，不过，生成的类没有构造函数和toString方法还给我们创建了一个CarExample类
+
+![image-20261117163034636](./note13-MyBatis的逆向工程.assets/image-20261117163034636.png)
+
+## 9.生成的Mapper接口和Mapper.xml非常复杂
+
+![image-20261117163455224](./note13-MyBatis的逆向工程.assets/image-20261117163455224.png)
+
+![image-20261117163438229](./note13-MyBatis的逆向工程.assets/image-20261117163438229.png)
+
+## 10.然后我们在测试类里面写一个测试代码，看看能否使用，发现是可以用的
+
+![image-20261117164251528](./note13-MyBatis的逆向工程.assets/image-20261117164251528.png)
+
+## 11.我们可以给Car类添加构造方法和toString方法，其实我们最需要的是它帮我们生成实体类。
+
+## 以后我们都是使用idea的MybatisX创建
+
+
 

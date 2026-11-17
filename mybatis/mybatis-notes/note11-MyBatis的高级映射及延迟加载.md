@@ -731,3 +731,121 @@ public class Clazz {
 ## 1.26此时即使你没有使用到Clazz的属性，它也会一起查询
 
 ![image-20261116143200892](./note11-MyBatis的高级映射及延迟加载.assets/image-20261116143200892.png)
+
+# 演练2.一对多
+
+## 2.1.为了做多对一我们把009项目复制一份改名：mybatis-009-advanced-mapping-one2many
+
+![image-20261117112111975](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117112111975.png)
+
+## 2.2然后我们修改一下Clazz类，添加一个集合属性students，然后我们需要添加这个属性的getter和setter，还需要重新编写全参数构造函数和toString方法，修改后的代码如下
+
+```
+package org.kenny.mybatis.entity;
+
+import java.util.List;
+
+public class Clazz {
+    private Integer cid;
+    private String cname;
+    //添加一个集合属性来保存多的一方。
+    private List<Student> students;
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public Clazz() {
+    }
+
+    public Clazz(Integer cid, String cname, List<Student> students) {
+        this.cid = cid;
+        this.cname = cname;
+        this.students = students;
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    @Override
+    public String toString() {
+        return "Clazz{" +
+                "cid=" + cid +
+                ", cname='" + cname + '\'' +
+                ", students=" + students +
+                '}';
+    }
+}
+
+```
+
+## 2.3给ClazzMapper类添加一个selectClazzAndStusByCid方法
+
+![image-20261117113256178](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117113256178.png)
+
+## 2.4.然后给idea安装一个插件：MybatisX
+
+![image-20261117113746726](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117113746726.png)
+
+![image-20261117113831191](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117113831191.png)
+
+### 注意，这个插件的功能还挺多的
+
+![image-20261117120246667](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117120246667.png)
+
+## 2.5安装了插件后，我们在mapper的左边会有一个小鸟，在方法名称上面按alt+回车，可以在mapper.xml里面生成一个sql语句标签，自动把id设置为和mapper方法名称一致。然后我们在里面编写sql代码并且写一个对应的resultMap
+
+![image-20261117122901581](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117122901581.png)
+
+## 2.6然后我们在测试类里面添加一个测试方法：testSelectClazzAndStusByCid，运行测试，顺利通过
+
+![image-20261117123049937](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117123049937.png)
+
+## 注意，这种方法不支持延迟加载
+
+## 演练3 .一对多懒加载方式
+
+## 3.1我们在ClazzMapper.xml里面新建一个select语句，id为：selectClazzAndStusByCidStep
+
+![image-20261117130300618](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117130300618.png)
+
+## 3.2然后根据这个resultMap的id新建一个resultMap，这个resultMap的collection标签里面需要使用一条sql语句，这一条语句来自StudentMapper.xml
+
+![image-20261117130522695](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117130522695.png)
+
+## 3.3 然后我们在ClazzMapper接口里面添加一个selectClazzAndStusByCidStep方法。
+
+![image-20261117130656858](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117130656858.png)
+
+## 3.4然后我们需要在StudentMapper.xml文件里面添加一条select语句，注意，id是ClazzMapper.xml里面引用的id
+
+![image-20261117130839877](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117130839877.png)
+
+## 3.5然后我们还需要在StudentMapper接口里面添加一个selectById的方法
+
+![image-20261117130947275](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117130947275.png)
+
+## 3.6 然后我们在测试类里面添加一个测试方法，因为我们已经在全局开启了栏加载，我们先只是生成班级的名称，此时只有一条sql语句，效果如下
+
+![image-20261117131220446](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117131220446.png)
+
+## 3.7.然后我们开启生成学生名称的语句，效果如下
+
+![image-20261117131415135](./note11-MyBatis的高级映射及延迟加载.assets/image-20261117131415135.png)

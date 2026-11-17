@@ -27,9 +27,6 @@
     <select id="selectAllToCamelCase" resultType="Car">
         select * from t_car
     </select>
-   <select id="selectById" resultType="java.util.Map" parameterType="long">
-       select * from t_car where id=#{id}
-   </select>
     <select id="selectByCarNum" resultType="map">
         select * from t_car where car_num=#{carNum}
     </select>

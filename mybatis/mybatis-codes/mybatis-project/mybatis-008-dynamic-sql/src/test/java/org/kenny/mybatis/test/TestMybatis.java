@@ -63,7 +63,7 @@ public class TestMybatis {
 //       car.setBrand("佳士拿限量版");
        car.setGuidePrice(BigDecimal.valueOf(21.9));
        car.setProduceTime("2023-04-02");
-       car.setCarType("混合动力");
+       car.setCarType("新能源");
        SqlSession sqlSession = SqlSessionUtil.openSession();
        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
        int count = mapper.updateWithSet(car);

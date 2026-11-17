@@ -202,3 +202,60 @@ public void testSelectById2() throws Exception{
    2. false：多条相同的sql语句执行之后返回的对象是副本，调用了clone方法。性能一般。但安全。
 4. size：
    1. 设置二级缓存中最多可存储的java对象数量。默认值1024。
+
+## 注意：mybatis中的一级缓存不需要程序员管理，mybatis会自动管理。二级缓存基本上不需要使用，因为选择有很多很好的缓存产品如redis，spring Cache等等，他们都比mybatis的二级缓存好
+
+
+
+# 演练：mybatis的一级缓存学习
+
+## 1.把007项目复制一份，改名mybatis-010-cache，把target文件夹删除，把pom.xml文件里面的项目名称改为：mybatis-010-cache，然后在idea里面把它中作为maven项目添加
+
+![image-20261117133806450](./note12-MyBatis的缓存.assets/image-20261117133806450.png)
+
+## 2.把CarMapper接口和CarMapper.xml里面的内容清空
+
+![image-20261117134027469](./note12-MyBatis的缓存.assets/image-20261117134027469.png)
+
+## 3.把测试类的代码也删除了
+
+![image-20261117134131246](./note12-MyBatis的缓存.assets/image-20261117134131246.png)
+
+## 4.我们在CarMapper.xml中添加一条工具id查询汽车的sql语句，id是selectById
+
+![image-20261117134858682](./note12-MyBatis的缓存.assets/image-20261117134858682.png)
+
+## 5.然后我们在mapper接口里面添加一个方法：selectById，注意方法名称和sql语句的id一致
+
+![image-20261117135001474](./note12-MyBatis的缓存.assets/image-20261117135001474.png)
+
+## 6.然后我们在测试类里面添加一个测试方法：testMybatisCache1，运行测试，顺利通过
+
+![image-20261117135128481](./note12-MyBatis的缓存.assets/image-20261117135128481.png)
+
+## 7.然后我们把相同的sql语句再执行一次，发现第二次它直接走缓存了
+
+![image-20261117135935413](./note12-MyBatis的缓存.assets/image-20261117135935413.png)
+
+## 8.如果我们在两次查询之间清理了缓存，此时它就必须执行2次sql，效果如下
+
+![image-20261117140332100](./note12-MyBatis的缓存.assets/image-20261117140332100.png)
+
+## 9.我们把清理缓存的代码注释了，然后在这两个查询之间添加一个insert，update或者删除语句，我们这里执行update，先在mapper.xml里面添加一条动态更新语句，id为updateById
+
+![image-20261117141843797](./note12-MyBatis的缓存.assets/image-20261117141843797.png)
+
+## 10.然后我们在mapper接口里面添加一个方法：updateById，方法名和mapper.xml里面的update语句的id一致
+
+![image-20261117141947519](./note12-MyBatis的缓存.assets/image-20261117141947519.png)
+
+## 11.然后我们修改运行代码
+
+![image-20261117151759070](./note12-MyBatis的缓存.assets/image-20261117151759070.png)
+
+## 12.运行测试，发现它有执行了2次查询语句
+
+![image-20261117142222168](./note12-MyBatis的缓存.assets/image-20261117142222168.png)
+
+## 说明只有连续调用相同的sql语句才会做缓存
+
