@@ -183,5 +183,30 @@ PageInfo{
 }
 ```
 
+# 演练-手动分页查询
 
-> 
+## 1.把10项目复杂一份，改名：mybatis-012-page，然后修改pom.xml里面的项目名称。把target删除，在idea中把项目添加为maven项目
+
+![image-20261117184510603](./note14-MyBatis使用PageHelper.assets/image-20261117184510603.png)
+
+## 2，把mapper接口和mapper.xml文件的内容清空，把测试类的方法删除
+
+![image-20261117184832662](./note14-MyBatis使用PageHelper.assets/image-20261117184832662.png)
+
+## 3.我们先在测试类里面添加一个测试方法test01,代码如下
+
+![image-20261117195338478](./note14-MyBatis使用PageHelper.assets/image-20261117195338478.png)
+
+## 4.此时selectPage还没有实现，我们在她上面点击一下，按alt+enter-》在mapper接口在生成这个方法
+
+![image-20261117201658550](./note14-MyBatis使用PageHelper.assets/image-20261117201658550.png)
+
+## 5.然后点击这个方法，按alt+enter-》生成sql语句，就可以在mapper.xml中添加一个select语句的框架，我们需要修改一下参数，并且把这条语句完成
+
+![image-20261117201835086](./note14-MyBatis使用PageHelper.assets/image-20261117201835086.png)
+
+## 6.运行代码，顺利通过测试
+
+![image-20261117201923190](./note14-MyBatis使用PageHelper.assets/image-20261117201923190.png)
+
+# 演练2.pageHelper插件

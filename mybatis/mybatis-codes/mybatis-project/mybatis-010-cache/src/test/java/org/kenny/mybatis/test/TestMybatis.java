@@ -31,7 +31,7 @@ public class TestMybatis {
         //在两次查询之间运行一条更新语句
         Car car1 = new Car();
         car1.setId(3L);
-        car1.setBrand("宝龙888");
+        car1.setBrand("宝龙666");
         mapper.updateById(car1);
         sqlSession.commit();
         //执行相同的语句看看会不会再次输出sql语句
@@ -45,8 +45,9 @@ public class TestMybatis {
         CarMapper mapper = sqlSession.getMapper(CarMapper.class);
         Car car1 = new Car();
         car1.setId(3L);
-        car1.setBrand("宝龙555");
-        mapper.updateById(car1);
+        car1.setBrand("宝龙999");
+        int count = mapper.updateById(car1);
+        System.out.println(count);
         sqlSession.commit();
     }
 }

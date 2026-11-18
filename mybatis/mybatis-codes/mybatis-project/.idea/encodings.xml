@@ -31,5 +31,7 @@
     <file url="file://$PROJECT_DIR$/mybatis-010-cache/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-011-generator/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatis-011-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-012-page/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis-012-page/src/main/resources" charset="UTF-8" />
   </component>
 </project>
