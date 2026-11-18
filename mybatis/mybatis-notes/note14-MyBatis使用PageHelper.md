@@ -210,3 +210,31 @@ PageInfo{
 ![image-20261117201923190](./note14-MyBatis使用PageHelper.assets/image-20261117201923190.png)
 
 # 演练2.pageHelper插件
+
+## 2.1引入依赖
+
+![image-20261118130300987](./note14-MyBatis使用PageHelper.assets/image-20261118130300987.png)
+
+## 2.2在mybatis-config.xml里面配置这个插件
+
+![image-20261118130645837](./note14-MyBatis使用PageHelper.assets/image-20261118130645837.png)
+
+## 2.3然后我们在测试类里面添加一个测试方法，注意此时mapper的这个方法还没有实现
+
+![image-20261118131251277](./note14-MyBatis使用PageHelper.assets/image-20261118131251277.png)
+
+## 2.4选择这个方法按alt+enter在mapper接口里面创建这个方法，就会在mapper接口里面声明这个方法
+
+![image-20261118131421111](./note14-MyBatis使用PageHelper.assets/image-20261118131421111.png)
+
+## 2.5此时mapper.xml文件里面还没有这一条sql语句，我们可以在这个方法上面按alt+enter，生成statement，然后我们把sql语句补上
+
+![image-20261118132342531](./note14-MyBatis使用PageHelper.assets/image-20261118132342531.png)
+
+## 2.6还可以改良一下测试方法
+
+![image-20261118133018308](./note14-MyBatis使用PageHelper.assets/image-20261118133018308.png)
+
+## 2.7测试一下，顺利通过
+
+![image-20261118140408117](./note14-MyBatis使用PageHelper.assets/image-20261118140408117.png)

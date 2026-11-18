@@ -8,4 +8,7 @@
     <select id="selectPage" resultType="Car" parameterType="map">
         select * from t_car limit #{startIndex},#{pageSize}
     </select>
+    <select id="selectAll" resultType="Car">
+        select * from t_car
+    </select>
 </mapper>

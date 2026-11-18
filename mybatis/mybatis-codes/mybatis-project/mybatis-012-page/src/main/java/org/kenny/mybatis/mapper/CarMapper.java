@@ -9,5 +9,7 @@ import java.util.Map;
 public interface CarMapper {
 
     List<Car> selectPage(Map<String, Object> params);
+
+    List<Car> selectAll();
 }
 

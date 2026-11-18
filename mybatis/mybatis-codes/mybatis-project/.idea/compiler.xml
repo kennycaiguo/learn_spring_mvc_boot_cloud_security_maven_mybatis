@@ -9,6 +9,7 @@
         <module name="mybatis-008-dynamic-sql" />
         <module name="mybatis-011-generator" />
         <module name="mybatis-001-introduction" />
+        <module name="mybatis-013-annotation" />
         <module name="mybatis-003-configuration" />
         <module name="mybatis-004-maven-web-dynamic-dao-impl" />
         <module name="mybatis-006-param" />

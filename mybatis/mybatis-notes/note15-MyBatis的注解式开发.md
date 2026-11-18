@@ -141,3 +141,98 @@ public void testSelectById() throws Exception{
 
 > 更新: 2026-07-21 00:12:42  
 > 原文: <https://www.yuque.com/dujubin/java/udots9ngcd97pyui>
+
+# 演练：mybatis注解式开发（其实是不推荐的，了解即可）
+
+## 1.把10项目复制一份，改名mybatis-013-annotation，然后删除target文件夹，修改pom.xml文件里面的项目名称，然后在idea中把它添加为maven项目
+
+<img src="./note15-MyBatis的注解式开发.assets/image-20261118141200909.png" alt="image-20261118141200909" style="zoom:50%;" />
+
+
+
+## 2.把Car类和CarMapper接口和CarMapper.xml删除，把测试代码删除把前面项目的Clazz类拿过来，然后我们创建一个ClazzMapper接口
+
+![image-20261118143214443](./note15-MyBatis的注解式开发.assets/image-20261118143214443.png)
+
+## 3.把mapper.xml文件所在的包也删除同
+
+![image-20261118143533846](./note15-MyBatis的注解式开发.assets/image-20261118143533846.png)
+
+## 4.然后我们给Mapper接口声明一些方法
+
+![image-20261118150711314](./note15-MyBatis的注解式开发.assets/image-20261118150711314.png)
+
+
+
+## 5.然后我们给测试类添加一些方法，都已经顺利通过测试，测试类TestMyBatis的完整代码如下
+
+```
+package org.kenny.mybatis.test;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.jupiter.api.Test;
+
+import org.kenny.mybatis.entity.Clazz;
+import org.kenny.mybatis.mapper.ClazzMapper;
+import org.kenny.mybatis.util.SqlSessionUtil;
+
+import java.io.IOException;
+import java.util.List;
+
+public class TestMybatis {
+    @Test
+    public void testAdd(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        ClazzMapper mapper = sqlSession.getMapper(ClazzMapper.class);
+        Clazz clazz = new Clazz();
+//        clazz.setCid(1003);
+//        clazz.setCname("高二1班");
+        clazz.setCid(1004);
+        clazz.setCname("高二2班");
+        int count = mapper.insert(clazz);
+        System.out.println("成功插入"+count+"条数据");
+        sqlSession.commit();
+    }
+    @Test
+    public void testDelete(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        ClazzMapper mapper = sqlSession.getMapper(ClazzMapper.class);
+        //删除高二2班信息
+        int count = mapper.deleteByCid(1004);
+        System.out.println("成功删除"+count+"条数据");
+        sqlSession.commit();
+    }
+
+    @Test
+    public void testUpdate(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        ClazzMapper mapper = sqlSession.getMapper(ClazzMapper.class);
+        Clazz clazz = new Clazz();
+        clazz.setCid(1003); //做update的时候，id必须是存在的，否则更新会失败
+        clazz.setCname("樟木头中学高二1班");
+        int count = mapper.updateByCid(clazz);
+        System.out.println("成功更新"+count+"条数据");
+        sqlSession.commit();
+    }
+
+    @Test
+    public void testSelectByCid(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        ClazzMapper mapper = sqlSession.getMapper(ClazzMapper.class);
+        Clazz clazz = mapper.selectByCid(1002);
+        System.out.println(clazz);
+    }
+
+    @Test
+    public void testSelectAll(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        ClazzMapper mapper = sqlSession.getMapper(ClazzMapper.class);
+        List<Clazz> clazzes = mapper.selectAll();
+        clazzes.forEach(System.out::println);
+    }
+}
+```
+

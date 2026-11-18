@@ -1,5 +1,7 @@
 package org.kenny.mybatis.test;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 
 import org.kenny.mybatis.entity.Car;
@@ -25,5 +27,16 @@ public class TestMybatis {
       CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
       List<Car> cars = mapper.selectPage(params);
       cars.forEach(System.out::println);
+   }
+   @Test
+   public void testPageHelper(){
+      CarMapper mapper = SqlSessionUtil.openSession().getMapper(CarMapper.class);
+      int pageNo=3;
+      int pageSize=5;
+      PageHelper.startPage(pageNo,pageSize);
+      List<Car> cars = mapper.selectAll();
+      PageInfo<Car> pageInfo = new PageInfo<>(cars,2);
+//      System.out.println(pageInfo.getTotal());
+      pageInfo.getList().forEach(System.out::println); //遍历输出查询到的数据集合
    }
 }
