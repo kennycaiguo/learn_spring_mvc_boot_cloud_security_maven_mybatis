@@ -413,5 +413,112 @@ logger.info("我是一条日志消息");
 
 ![image-20261029152602010](./note03-Spring入门程序.assets/image-20261029152602010.png)
 
-## 3.点击文件，设置，设置一下maven工具
+## 3.点击文件，设置，设置一下maven工具，把它设置为我们安装的maven，同时需要修改配置文件为我们的安装目录里面的conf文件夹里面的settings.xml
 
+![image-20261119183559946](./note03-Spring入门程序.assets/image-20261119183559946.png)
+
+## 4.把项目改名spring-project1
+
+![image-20261119184323559](./note03-Spring入门程序.assets/image-20261119184323559.png)
+
+## 5.点击文件-》设置-》编辑器-》文件编码，在右边的面板里面把所有的编码都改为utf-8
+
+![image-20261119190337031](./note03-Spring入门程序.assets/image-20261119190337031.png)
+
+## 6.给项目条件应该模块，起名：spring-001-first
+
+![image-20261119190527916](./note03-Spring入门程序.assets/image-20261119190527916.png)
+
+## 7.添加相关的依赖
+
+![image-20261119190842977](./note03-Spring入门程序.assets/image-20261119190842977.png)
+
+## 8.然后我们新建应该包：org.kenny.spring.bean,在里面新建一个User类，注意：先不要写任何代码
+
+![image-20261119191418726](./note03-Spring入门程序.assets/image-20261119191418726.png)
+
+## 9.我们在main/resources文件里面创建一个Spring的配置文件，此时就会弹出一个命名窗口
+
+![image-20261119191653210](./note03-Spring入门程序.assets/image-20261119191653210.png)
+
+## 10.起名：beans.xml,然后按回车
+
+![image-20261119191842683](./note03-Spring入门程序.assets/image-20261119191842683.png)
+
+![image-20261119191900405](./note03-Spring入门程序.assets/image-20261119191900405.png)
+
+## 11.在这个文件里面添加一个bean标签，把它和我们视图类的全限定类名对应起来
+
+![image-20261119192428534](./note03-Spring入门程序.assets/image-20261119192428534.png)
+
+## 12.然后我们在test文件夹里面创建一个org.kenny.spring.test包，在里面新建一个测试类：TestSpringBean，在里面新建一个测试方法test01，代码如下，运行测试，是可以顺利通过的
+
+![image-20261119193732862](./note03-Spring入门程序.assets/image-20261119193732862.png)
+
+## 13.我们再获取一次bean对象并且输出，发现他们是同一个对象
+
+![image-20261119194313484](./note03-Spring入门程序.assets/image-20261119194313484.png)
+
+## 说明用这种方式获取的bean对象是单例的
+
+# 演练2.关于第一个spring程序的一些问题
+
+## 2.1.bean的id不能够重复，我们可以新建一个Vip类，在beans.xml里面使用和User类一样的id，此时idea工具就警告说id重复了
+
+![image-20261119194807104](./note03-Spring入门程序.assets/image-20261119194807104.png)
+
+![image-20261119194912619](./note03-Spring入门程序.assets/image-20261119194912619.png)
+
+## 2.2.当我们在测试代码里面用一样的id获取vip的bean,程序就会崩溃，说这个id已经被使用了。
+
+![image-20261119195127185](./note03-Spring入门程序.assets/image-20261119195127185.png)
+
+## 2.3回到beans.xml，我们把Vip的id改为vipBean，你会发现，警告消失了
+
+![image-20261119195413457](./note03-Spring入门程序.assets/image-20261119195413457.png)
+
+## 2.4回到测试代码，我们用vipBean来获取Vip对象，可以顺利通过测试
+
+![image-20261119195528147](./note03-Spring入门程序.assets/image-20261119195528147.png)
+
+# 演练3.看看spring是否是使用无参构造方法来创建对象
+
+## 3.1.给User类添加一个无参构造函数和一个带参构造函数，你会发现idea包错，说没有匹配带参数的Bean
+
+![image-20261119195905814](./note03-Spring入门程序.assets/image-20261119195905814.png)
+
+## 3.2 我们把带参数的构造函数删除
+
+![image-20261119195956957](./note03-Spring入门程序.assets/image-20261119195956957.png)
+
+## 3.3然后运行测试代码，发现这个构造函数被调用了
+
+![image-20261119200048168](./note03-Spring入门程序.assets/image-20261119200048168.png)
+
+### 可见spring的底层的确是通过无参构造函数来创建对象
+
+## 其实是允许有无参和有参数构造方法的，但是它只会抵用无参构造方法
+
+![image-20261119200532064](./note03-Spring入门程序.assets/image-20261119200532064.png)
+
+# 演练4.配置文件必须叫beans.xml吗
+
+## 4.1 我们在main/resources文件夹里面新建文件夹，在里面新建一个app.xml,在里面定义一个bean，把它和Vip类映射起来
+
+![image-20261119201015830](./note03-Spring入门程序.assets/image-20261119201015830.png)
+
+## 4.2 然后我们在测试类里面新建一个测试方法test02，用xml/app.xml来创建Vip bean对象，发现代码没有任何问题，可以顺利通过测试
+
+![image-20261119201246370](./note03-Spring入门程序.assets/image-20261119201246370.png)
+
+### 可见spring的配置文件可以人任意名称，路径也可以是任意路径，不够建议放在类路径下面
+
+# 演练5.配置文件可以有多个吗？可以
+
+## 5.1，我们把beans.xml里面的vipbean删除，也可以注释掉
+
+![image-20261119204226088](./note03-Spring入门程序.assets/image-20261119204226088.png)
+
+## 5.2然后我们写一个test0测试方法，同时加载这两个配置文件，注意此时这两个bean分别在两个不同的文件中配置，我们发现，它仍然看可以顺利通过测试
+
+![image-20261119205405094](./note03-Spring入门程序.assets/image-20261119205405094.png)
