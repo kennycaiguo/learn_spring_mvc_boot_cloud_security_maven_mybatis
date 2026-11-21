@@ -522,3 +522,74 @@ logger.info("我是一条日志消息");
 ## 5.2然后我们写一个test0测试方法，同时加载这两个配置文件，注意此时这两个bean分别在两个不同的文件中配置，我们发现，它仍然看可以顺利通过测试
 
 ![image-20261119205405094](./note03-Spring入门程序.assets/image-20261119205405094.png)
+
+# 演练6.spring中配置的类必须是自定义类吗？不是，但是这个类不能是一个抽象类而且一定要提供无参构造函数。可以是jdk的类吗？可以
+
+## 6.1.我们在beans.xml里面添加一个bean，把它映射到java.util.Date
+
+![image-20261120104207430](./note03-Spring入门程序.assets/image-20261120104207430.png)
+
+## 6.2.然后我们编写一个test04方法，在里面获取这个today对象，发现可以顺利通过参数，生成今天的日期对象
+
+![image-20261120104329345](./note03-Spring入门程序.assets/image-20261120104329345.png)
+
+# 演练7，调用getBean方法传递一个不存在的id就会抛异常说这个bean的id没有定义
+
+# 演练8.解决向下转型的问题
+
+## 8.1只需要在第二个参数里面指定需要的类的类型即可
+
+![image-20261120105453220](./note03-Spring入门程序.assets/image-20261120105453220.png)
+
+### 建议使用这种写法
+
+# 演练9.如果配置文件不是在类路径下面，如何加载，此时需要使用FileSystemXmlApplicationContext类来加载
+
+## 9.1我们把beans.xml复制一份到d盘，改名beans.xml
+
+<img src="./note03-Spring入门程序.assets/image-20261120110043881.png" alt="image-20261120110043881" style="zoom:50%;" />
+
+## 9.2 然后我们来添加一个测试方法test06,注意此时不能使用ClassPathXmlApplicationContext，需要使用FileSystemXmlApplicationContext类来加载，也是可以顺利通过测试的。
+
+![image-20261120110509310](./note03-Spring入门程序.assets/image-20261120110509310.png)
+
+### 注意：这种方式不建议使用，还是使用ClassPathApplicationContext.
+
+# 演练10.BeanFactory接口的使用
+
+## 10.1找一个测试方法，比如test05,在里面使用BeanFactory 来代替ApplicationContext.也是可以顺利通过测试的
+
+![image-20261120111127813](./note03-Spring入门程序.assets/image-20261120111127813.png)
+
+# 演练11.spring集成logback
+
+## 11.1在pom.xml中引入logback依赖
+
+![image-20261120112146712](./note03-Spring入门程序.assets/image-20261120112146712.png)
+
+## 11.2在类路径里面新建一个logback.xml文件，
+
+![image-20261120112339272](./note03-Spring入门程序.assets/image-20261120112339272.png)
+
+## 内容上面的笔记有,注意把项目包的设置改为你的项目的包名
+
+![image-20261120115902478](./note03-Spring入门程序.assets/image-20261120115902478.png)
+
+## 11.3.此时你随便运行一个测试代码，控制台都有一大堆的日志输出
+
+![image-20261120120008156](./note03-Spring入门程序.assets/image-20261120120008156.png)
+
+## 11.4同时我们发现在我们的项目里面新建了一个logs文件夹，里面有一个application.log日志文件
+
+![image-20261120120212365](./note03-Spring入门程序.assets/image-20261120120212365.png)
+
+
+
+
+
+
+
+
+
+
+

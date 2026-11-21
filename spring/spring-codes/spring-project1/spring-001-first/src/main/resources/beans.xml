@@ -6,4 +6,5 @@
     <!--将bean类对象的生命周期交给spring IoC容器管理-->
     <bean id="userBean" class="org.kenny.spring.bean.User" />
 <!--    <bean id="vipBean" class="org.kenny.spring.bean.Vip" />-->
+    <bean id="todayBean" class="java.util.Date" />
 </beans>

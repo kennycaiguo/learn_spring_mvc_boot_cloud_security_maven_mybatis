@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="ctrlBean" class="org.kenny.spring.controller.UserController" >
+       <!--把serviceBean配置为控制器类的一个属性，这里就是set注入-->
+        <property name="userService" ref="userServiceBean" />
+    </bean>
+   <!--使用set把2个userDao注入为内部bean-->
+    <bean id="userServiceBean" class="org.kenny.spring.service.impl.UserServiceImpl">
+        <property name="userDao">
+            <bean class="org.kenny.spring.dao.impl.UserDaoImpl" />
+        </property>
+        <property name="userDao2">
+            <bean class="org.kenny.spring.dao.impl.UserDaoImpl2" />
+        </property>
+    </bean>
+
+<!--    <bean id="userDaoBean" class="org.kenny.spring.dao.impl.UserDaoImpl" />-->
+
+
+   <!-- OrderController对应的bean-->
+    <bean id="orderCtrlBean" class="org.kenny.spring.controller.OrderController" >
+       <!---把service对象作为构造函数的参数配置-->
+<!--        <constructor-arg name="orderService" ref="orderServiceBean" />-->
+        <constructor-arg index="0" ref="orderServiceBean" />
+    </bean>
+   <!--OrderService对象对应的bean-->
+    <bean id="orderServiceBean" class="org.kenny.spring.service.impl.OrderServiceImpl">
+       <!--把dao对象作为构造函数的参数配置-->
+<!--        <constructor-arg name="orderDao" ref="orderDaoBean" />-->
+        <constructor-arg index="0" ref="orderDaoBean" />
+    </bean>
+    <!--OrderDao对象对应的bean-->
+    <bean id="orderDaoBean" class="org.kenny.spring.dao.impl.OrderDaoImpl" />
+</beans>
