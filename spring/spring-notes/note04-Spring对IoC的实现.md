@@ -1988,3 +1988,160 @@ jdbc.password=root123
 ## 9.3写一个测试方法，顺利通过测试
 
 ![image-20261123202658447](./note04-Spring对IoC的实现.assets/image-20261123202658447.png)
+
+# 演练10.注入list
+
+## 10.1在entity里面新建一个People类，有一个list属性
+
+![image-20261124100225195](./note04-Spring对IoC的实现.assets/image-20261124100225195.png)
+
+## 10.2在spring-simple-type.xml里面配置这个bean
+
+![image-20261124102453074](./note04-Spring对IoC的实现.assets/image-20261124102453074.png)
+
+## 10.3.写一个此时函数，顺利通过测试
+
+![image-20261124102657442](./note04-Spring对IoC的实现.assets/image-20261124102657442.png)
+
+# 演练10b 注入set集合
+
+# 10b.1新建一个Contact类，里面有一个Set集合类型的属性phones
+
+![image-20261124113737470](./note04-Spring对IoC的实现.assets/image-20261124113737470.png)
+
+## 10b.2然后我们在spring-simple-type.xml里面配置这个bean,注意，为了测试set的去重功能，我们故意写了3个相同的电话号码
+
+![image-20261124121226852](./note04-Spring对IoC的实现.assets/image-20261124121226852.png)
+
+
+
+### 10b.3写一个测试方法，顺利通过，发现它的确可以去重
+
+![image-20261124121342156](./note04-Spring对IoC的实现.assets/image-20261124121342156.png)
+
+
+
+# 演练11.注入map
+
+## 11.1还是People类，我们给它添加一个Map类型的属性emails，注意需要添加setter，然后还需要修改一下toString方法
+
+![image-20261124103424146](./note04-Spring对IoC的实现.assets/image-20261124103424146.png)
+
+## 11.2然后我们来修改peopleBean，添加emails属性
+
+![image-20261124103711914](./note04-Spring对IoC的实现.assets/image-20261124103711914.png)
+
+## 11.3 添加一个测试方法，顺利通过
+
+![image-20261124103952579](./note04-Spring对IoC的实现.assets/image-20261124103952579.png)
+
+# 
+
+# 演练12.注入Properties对象，其实也是一个类似map的类型
+
+## 12.1 我们新建一个MyConf类，里面有一个Properties类型的属性
+
+![image-20261124140145980](./note04-Spring对IoC的实现.assets/image-20261124140145980.png)
+
+## 12.2.然后我们来配置这个bean，Properties类似一个Map类型
+
+![image-20261124135908098](./note04-Spring对IoC的实现.assets/image-20261124135908098.png)
+
+### 注意，用map标签也行，但是不规范
+
+## 12.3编写一个测试函数，顺利通过
+
+![image-20261124140037198](./note04-Spring对IoC的实现.assets/image-20261124140037198.png)
+
+## 演练13.注入null或者空值
+
+## 13.1，新建一个FakeUser类，有2个属性，name用来测试空值，email用来测试null值
+
+![image-20261124110002935](./note04-Spring对IoC的实现.assets/image-20261124110002935.png)
+
+## 13.2然后我们在spring-simple-type.xml里面配置这个bean
+
+![image-20261124110456589](./note04-Spring对IoC的实现.assets/image-20261124110456589.png)
+
+## 13.3编写一个测试函数，顺利通过
+
+![image-20261124110539795](./note04-Spring对IoC的实现.assets/image-20261124110539795.png)
+
+## 13.4还有第二种配置的写法
+
+![image-20261124111015567](./note04-Spring对IoC的实现.assets/image-20261124111015567.png)
+
+## 13.5效果是一样的
+
+![image-20261124111055816](./note04-Spring对IoC的实现.assets/image-20261124111055816.png)
+
+## 注意，null还可以这么配置
+
+![image-20261124142515508](./note04-Spring对IoC的实现.assets/image-20261124142515508.png)
+
+# 演练14.注入含义特殊符合的值
+
+## 14.1新建一个MyMath类，有一个result属性
+
+![image-20261124112804088](./note04-Spring对IoC的实现.assets/image-20261124112804088.png)
+
+## 14.2.然后我们在spring-simple-type.xml中给它传递一些特殊值
+
+![image-20261124112902429](./note04-Spring对IoC的实现.assets/image-20261124112902429.png)
+
+## 14.3编写一个测试方法，顺利通过
+
+![image-20261124112950146](./note04-Spring对IoC的实现.assets/image-20261124112950146.png)
+
+# 演练15.p命名空间的使用，也是基于setter的，需要给属性提供setter方法
+
+## 15.1定义一个Customer类有姓名和年龄2个属性，需要提供set方法和toString方法
+
+![image-20261124144314310](./note04-Spring对IoC的实现.assets/image-20261124144314310.png)
+
+## 15.2新建一个spring-p.xml配置文件，需要添加p命名空间映射
+
+![image-20261124144731427](./note04-Spring对IoC的实现.assets/image-20261124144731427.png)
+
+## 15.3写一个测试代码，顺利提供
+
+![image-20261124145146538](./note04-Spring对IoC的实现.assets/image-20261124145146538.png)
+
+# 演练16.c命名空间注入
+
+## 16.1新建一个Client类，有2个属性，我们先并提供setter，但是提供一个全参数构造函数和一个toString方法
+
+![image-20261124150934226](./note04-Spring对IoC的实现.assets/image-20261124150934226.png)
+
+## 16.2然后我们新建一个spring-c.xml配置文件，引入c命名空间，然后来配置我们的bean
+
+![image-20261124151955492](./note04-Spring对IoC的实现.assets/image-20261124151955492.png)
+
+## 16.3写一个测试方法，顺利通过
+
+![image-20261124152045818](./note04-Spring对IoC的实现.assets/image-20261124152045818.png)
+
+### 注意：默认在使用c命名空间的时候，是不能传递属性名称的，会因为错位而报错，如果你一定要使用属性名称来设置值，需要先在pom.xml里面配置maven-compile-plugin插件，在里面的configuration里面配置parameters为true
+
+![image-20261124154947041](./note04-Spring对IoC的实现.assets/image-20261124154947041.png)
+
+## 效果是一样的
+
+![image-20261124155201688](./note04-Spring对IoC的实现.assets/image-20261124155201688.png)
+
+# 演练17.util命名空间注入，需要setter
+
+## 17.1.新建2个类DataSource1和DataSurce1，他们都有一个properties属性而且提供set方法，这里不需要构造函数，这两个类处理名称以外是一模一样的。
+
+![image-20261124160151309](./note04-Spring对IoC的实现.assets/image-20261124160151309.png)
+
+## 17.2创建一个spring-util.xml配置文件，需要添加util命名空间和xsd设置
+
+![image-20261124161343016](./note04-Spring对IoC的实现.assets/image-20261124161343016.png)
+
+## 17.3编写一个测试方法，顺利通过
+
+![image-20261124161512960](./note04-Spring对IoC的实现.assets/image-20261124161512960.png)
+
+# 演练18.基于xml的自动装配
+

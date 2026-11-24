@@ -56,4 +56,73 @@
             </array>
         </property>
     </bean>
+
+    <!--注入List和Map-->
+    <bean id="peopleBean" class="org.kenny.spring.entity.People">
+        <property name="name" value="李明" />
+        <property name="nicknames" >
+            <list>
+                <value>小明</value>
+                <value>明仔</value>
+                <value>二哥</value>
+                <value>二狗</value>
+            </list>
+        </property>
+        <property name="emails" >
+            <map>
+                <!--如果key不是简单类型，使用 key-ref 属性-->
+                <!--如果value不是简单类型，使用 value-ref 属性-->
+                <entry key="1" value="Jack1234@gmail.com"/>
+                <entry key="2" value="Jackgood333@hotmail.com"/>
+                <entry key="3" value="Jackfood$$@qq.com"/>
+            </map>
+        </property>
+    </bean>
+     <!--注入set,set有去重功能，你新建多个相同的value，只会设置一个到对象里面-->
+     <bean id="contactBean" class="org.kenny.spring.entity.Contact">
+         <property name="phones" >
+             <set>
+                 <value>13566677770</value>
+                 <value>13566677770</value>
+                 <value>13566677770</value>
+                 <value>13666677880</value>
+                 <value>13966622889</value>
+             </set>
+         </property>
+     </bean>
+
+     <!--注入Properties对象，本质上是一个但是配置方法不一样-->
+    <bean id="myConfBean" class="org.kenny.spring.entity.MyConf">
+        <property name="properties">
+           <props>
+               <prop key="driver">com.mysql.cj.jdbc.Driver</prop>
+               <prop key="url">jdbc:mysql://localhost:3306/spring</prop>
+               <prop key="user">com.mysql.cj.jdbc.Driver</prop>
+               <prop key="password">root</prop>
+               <prop key="initialSize">root</prop>
+               <prop key="maxActive">10</prop>
+               <prop key="driver">20</prop>
+           </props>
+        </property>
+    </bean>
+    <!--注入空值和null-->
+    <bean id="fakeUserBean" class="org.kenny.spring.entity.FakeUser" >
+        <!--写法1-->
+        <!--<property name="name" value="" />-->
+        <!--<property name="email" value="null" />-->
+       <!--写法2 -->
+        <property name="name">
+        <!--用一个空value标签就是空-->
+            <value />
+        </property>
+       <!--email不给它配置，就是null-->
+    </bean>
+
+    <!--注入有特殊字符的值-->
+    <bean id="mathBean" class="org.kenny.spring.entity.MyMath">
+       <!--2<3的写法-->
+        <property name="result" value="2 &lt; 3" />
+    </bean>
+
+
 </beans>

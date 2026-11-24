@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+         <!--c命名空间默认是按索引来传递值的，如果有参数名称，会方式错位而崩溃-->
+         <!--<bean id="clientBean" class="org.kenny.spring.entity.Client" c:_0="Jack" c:_1="30" />-->
+         <!--通过参数名称来传递值，需要在pom.xml文件里面配置maven编译插件并且把paramters参数设置为true -->
+         <bean id="clientBean" class="org.kenny.spring.entity.Client" c:name="Jack" c:age="30" />
+</beans>

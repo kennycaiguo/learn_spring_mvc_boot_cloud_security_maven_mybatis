@@ -3,13 +3,13 @@ package org.kenny.spring.test;
 import org.junit.jupiter.api.Test;
 import org.kenny.spring.controller.OrderController;
 import org.kenny.spring.controller.UserController;
-import org.kenny.spring.entity.Order;
-import org.kenny.spring.entity.Person;
-import org.kenny.spring.entity.Student;
-import org.kenny.spring.entity.User;
+import org.kenny.spring.entity.*;
 import org.kenny.spring.pool.MyPool;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.kenny.spring.entity.MyMath;
+
+import javax.sql.DataSource;
 
 public class SpringDITest {
     @Test
@@ -61,4 +61,64 @@ public class SpringDITest {
         Order order = context.getBean("orderBean", Order.class);
         System.out.println(order);
     }
+    @Test
+    public void testInjectListType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        People people = context.getBean("peopleBean", People.class);
+        System.out.println(people);
+    }
+    @Test
+    public void testInjectSetType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        Contact contact = context.getBean("contactBean", Contact.class);
+        System.out.println(contact);
+    }
+
+    @Test
+    public void testInjectMapType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        People people = context.getBean("peopleBean", People.class);
+        System.out.println(people);
+    }
+    @Test
+    public void testInjectPropertiesType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        MyConf conf = context.getBean("myConfBean", MyConf.class);
+        System.out.println(conf);
+    }
+    @Test
+    public void testInjectEmptyAndNullType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        FakeUser fakeUser = context.getBean("fakeUserBean", FakeUser.class);
+        System.out.println(fakeUser);
+    }
+    @Test
+    public void testInjectSpecialCharacter() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-simple-type.xml");
+        MyMath math = context.getBean("mathBean", MyMath.class);
+        System.out.println(math);
+    }
+
+    @Test
+    public void testInjectPNamespace(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-p.xml");
+        Customer customer = context.getBean("customerBean", Customer.class);
+        System.out.println(customer);
+    }
+    @Test
+    public void testInjectCNamespace(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-c.xml");
+        Client client = context.getBean("clientBean", Client.class);
+        System.out.println(client);
+    }
+
+    @Test
+    public void testInjectUtilNamespace(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-util.xml");
+        DataSource1 dataSource1 = context.getBean("ds1Bean", DataSource1.class);
+        DataSource2 dataSource2 = context.getBean("ds2Bean", DataSource2.class);
+        System.out.println(dataSource1);
+        System.out.println(dataSource2);
+    }
+
 }
