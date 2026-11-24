@@ -587,10 +587,6 @@ public class Clazz {
     public Clazz() {
     }
 
-    public Clazz(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
@@ -615,11 +611,6 @@ public class Student {
     private Clazz clazz;
 
     public Student() {
-    }
-
-    public Student(String name, Clazz clazz) {
-        this.name = name;
-        this.clazz = clazz;
     }
 
     public void setName(String name) {
@@ -1914,5 +1905,86 @@ jdbc.password=root123
 
 ![image-20261120202639982](./note04-Spring对IoC的实现.assets/image-20261120202639982.png)
 
-### 注意，使用内部bean的前提是这个bean只有在一个地方使用，没有共享，有共享的话使用外部bean。
+### 注意，使用内部bean的前提是这个bean只有在一个地方使用，没有共享，有共享的话使用外部bean。其实这种方法并不常用，因为它太不灵活了。
 
+
+
+## 演练5.注入简单类型，比如给一个类添加一个属性
+
+## 5.1还是这个002项目，新建一个entity包，在里面新建一个User类，添加一些属性，而且只给setter不给getter还有一个toString方法
+
+![image-20261123182251298](./note04-Spring对IoC的实现.assets/image-20261123182251298.png)
+
+## 5.2 编写spring配置文件：spring-simple-type.xml，在这里给User添加属性
+
+![image-20261123182838192](./note04-Spring对IoC的实现.assets/image-20261123182838192.png)
+
+## 5.3然后我们写一个测试函数，发现可用顺利通过
+
+![image-20261123183100485](./note04-Spring对IoC的实现.assets/image-20261123183100485.png)
+
+# 演练6.给数据源的属性注入值
+
+## 6.1还是002项目，我们新建一个pool包，里面新建一个MyPool类，实现javax.sql.DataSource接口，然后我们需要实现接口的所有方法
+
+![image-20261123184347923](./note04-Spring对IoC的实现.assets/image-20261123184347923.png)
+
+## 6.2这里我们并不是真正实现他的所有方法，只保留一个空实现，我们主要来看看然后注入一些属性，我们先声明这些属性，然后给他们添加setter方法
+
+![image-20261123185907320](./note04-Spring对IoC的实现.assets/image-20261123185907320.png)
+
+## 注意：要给它生成一个toString方法
+
+![image-20261123190217559](./note04-Spring对IoC的实现.assets/image-20261123190217559.png)
+
+## 6.3然后我们可用在spring-simple-type.xml里面配置一个bean来映射这个类
+
+![image-20261123185951323](./note04-Spring对IoC的实现.assets/image-20261123185951323.png)
+
+## 6.4我们添加一个测试代码，发现可用顺利通过
+
+![image-20261123190437157](./note04-Spring对IoC的实现.assets/image-20261123190437157.png)
+
+# 演练7.级联属性的注入，注意此时级联的类需要有getter方法
+
+## 7.1新建2个类，一个Clazz类和一个Student类其中Student类有个clazz属性是Clazz的对象，注意clazz属性必须有get方法
+
+![image-20261123195920615](./note04-Spring对IoC的实现.assets/image-20261123195920615.png)
+
+
+
+## 7.2然后我们在spring-simple-type.xml中做如下配置
+
+![image-20261123193738076](./note04-Spring对IoC的实现.assets/image-20261123193738076.png)
+
+## 7.3编写一个测试方法，顺利通过
+
+![image-20261123193840919](./note04-Spring对IoC的实现.assets/image-20261123193840919.png)
+
+# 演练8.注入数组
+
+## 8.1在entity包里面新建一个Person类，他有一个属性是一个数组
+
+![image-20261123195340314](./note04-Spring对IoC的实现.assets/image-20261123195340314.png)
+
+## 8.2然后我们在spring-simple-type里面配置这个bean
+
+![image-20261123200625139](./note04-Spring对IoC的实现.assets/image-20261123200625139.png)
+
+## 8.3编写一个测试方法，顺利通过
+
+![image-20261123200710938](./note04-Spring对IoC的实现.assets/image-20261123200710938.png)
+
+# 演练9.复杂数组的注入
+
+## 9.1.新建一个Goods类和一个Order类，Order类里面有一个Goods[]
+
+![image-20261123201623490](./note04-Spring对IoC的实现.assets/image-20261123201623490.png)
+
+## 9.2然后我们在spring-simple-type里面配置一下
+
+![image-20261123202410248](./note04-Spring对IoC的实现.assets/image-20261123202410248.png)
+
+## 9.3写一个测试方法，顺利通过测试
+
+![image-20261123202658447](./note04-Spring对IoC的实现.assets/image-20261123202658447.png)

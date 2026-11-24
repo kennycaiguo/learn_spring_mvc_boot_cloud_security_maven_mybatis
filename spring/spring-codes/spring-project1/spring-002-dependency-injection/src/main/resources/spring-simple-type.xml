@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userBean" class="org.kenny.spring.entity.User">
+        <property name="name" value="Jack" />
+        <property name="age" value="20" />
+    </bean>
+
+    <!--关联模拟连接池-->
+    <bean id="myPoolBean" class="org.kenny.spring.pool.MyPool">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/spring" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+        <property name="initialSize" value="10" />
+        <property name="maxActive" value="20" />
+     </bean>
+
+    <!--级联-->
+    <bean id="clazzBean" class="org.kenny.spring.entity.Clazz" />
+    <bean id="studentBean" class="org.kenny.spring.entity.Student">
+        <property name="name" value="Jack" />
+        <!--Clazz不是简单类型，需要使用ref-->
+        <property name="clazz" ref="clazzBean" />
+        <!--给引用属性的简单类型属性赋值,这个属性需要通过getter-->
+        <property name="clazz.name" value="高三(1)班" />
+    </bean>
+     <!--注入数组-->
+     <bean id="personBean" class="org.kenny.spring.entity.Person">
+         <property name="name" value="Mary" />
+         <property name="favoriteFoods" >
+             <array>
+                 <value>鸡排</value>
+                 <value>汉堡</value>
+                 <value>鹅肝</value>
+             </array>
+         </property>
+     </bean>
+    <!--注入对象数组-->
+    <bean id="goodsBean" class="org.kenny.spring.entity.Goods">
+        <property name="name" value="IPhone13"/>
+    </bean>
+    <bean id="goodsBean2" class="org.kenny.spring.entity.Goods">
+        <property name="name" value="MacBook Pro"/>
+    </bean>
+    <bean id="orderBean" class="org.kenny.spring.entity.Order">
+        <property name="orderId" value="123" />
+        <property name="clientName" value="Dragon Wholesale" />
+        <property name="goods">
+            <array>
+                <!--此时需要使用外部bean-->
+                <ref bean="goodsBean"/>
+                <ref bean="goodsBean2"/>
+            </array>
+        </property>
+    </bean>
+</beans>
