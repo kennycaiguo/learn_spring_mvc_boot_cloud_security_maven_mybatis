@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.kenny.spring.controller.OrderController;
 import org.kenny.spring.controller.UserController;
 import org.kenny.spring.entity.*;
+import org.kenny.spring.pool.MyDataSource;
 import org.kenny.spring.pool.MyPool;
+import org.kenny.spring.service.AccountService;
+import org.kenny.spring.service.ClientService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.kenny.spring.entity.MyMath;
@@ -121,4 +124,25 @@ public class SpringDITest {
         System.out.println(dataSource2);
     }
 
+    @Test
+    public void testInjectAutoWiredByName() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-autowire.xml");
+        ClientService service = context.getBean("serviceBean", ClientService.class);
+        System.out.println(service);
+        service.saveClient();
+    }
+
+    @Test
+    public void testInjectAutoWiredByType() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-autowire.xml");
+        AccountService service = context.getBean("accServiceBean", AccountService.class);
+        System.out.println(service);
+        service.saveAccount();
+    }
+    @Test
+    public void testInjectPropertiesFile() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-properties.xml");
+        MyDataSource dataSource = context.getBean("myDsBean", MyDataSource.class);
+        System.out.println(dataSource);
+    }
 }

@@ -2143,5 +2143,80 @@ jdbc.password=root123
 
 ![image-20261124161512960](./note04-Spring对IoC的实现.assets/image-20261124161512960.png)
 
-# 演练18.基于xml的自动装配
+# 演练18.基于xml的自动装配使用byName方法。这个名称其实是server里面的setXxx里面把set去掉，变为全小写xxx作为被装配对象的id。所以如果被装配对象的id不是这个xxx，就会注入失败。
 
+![image-20261124195125678](./note04-Spring对IoC的实现.assets/image-20261124195125678.png)
+
+## 18.1我们在dao包里面创建一个ClientDao类，添加一个insert方法，然后在service包里面新建一个ClientService，里面有一个ClientDao属性，需要通过setter方法
+
+![image-20261124184608142](./note04-Spring对IoC的实现.assets/image-20261124184608142.png)
+
+## 18.2为了方便测试，我们给ClientService添加一个saveClient方法
+
+![image-20261124185550814](./note04-Spring对IoC的实现.assets/image-20261124185550814.png)
+
+## 18.3创建一个spring-autowire.xml配置文件，在里面配置这两个bean，注意在serviceBean里面使用autowire="byName"属性，注意，这里有一个坑，ClientDao对应的bean的id必须和service里面的ClientDao的属性的遍历名称一致，否则无法注入
+
+![image-20261124185851639](./note04-Spring对IoC的实现.assets/image-20261124185851639.png)
+
+## 18.4.运行下面的测试代码顺利通过
+
+![image-20261124191050401](./note04-Spring对IoC的实现.assets/image-20261124191050401.png)
+
+# 演练18b.根据类型主动装配
+
+## 18b1.新建一个AccoutService类和一个AccountDao类，service类里面有一个dao类的属性。要给setter方法
+
+![image-20261124191445259](./note04-Spring对IoC的实现.assets/image-20261124191445259.png)
+
+## 18b2.还是使用spring-autowire.xml配置文件，我们来配置这两个bean
+
+![image-20261124194137072](./note04-Spring对IoC的实现.assets/image-20261124194137072.png)
+
+## 18b3.运行下面的代码，顺利通过测试
+
+![image-20261124194105659](./note04-Spring对IoC的实现.assets/image-20261124194105659.png)
+
+### 注意，
+
+#### 1.根据类型进行自动装配的话，同一种类型只能有一个对象否则会报错，因为它不知道该使用哪个对象，此时需要使用根据名称来装配，并且给每个对象起不一样的名称。就算是2个不同的配置文件里面有同一个类型的bean也不行。
+
+#### 2.如此看来，还是根据名称装配比较好一点
+
+# 演练19.spring引入外部文件
+
+## 19.1.在main/resources文件夹下面新建一个jdbc.properties文件，保存数据库连接信息
+
+![image-20261124202821641](./note04-Spring对IoC的实现.assets/image-20261124202821641.png)
+
+## 19.2在pool包里面新建一个MyDataSource类，有4个属性并且通过setter
+
+![image-20261124203207805](./note04-Spring对IoC的实现.assets/image-20261124203207805.png)
+
+## 19.3在main/resources文件夹里面新建一个spring-properties.xml文件，引入context命名空间和cotext的xsd声明
+
+![image-20261124203603829](./note04-Spring对IoC的实现.assets/image-20261124203603829.png)
+
+## 19.4.先用context并且引入jdbc.properties配置文件，然后就可以使用#{}来获取值
+
+![image-20261124204127876](./note04-Spring对IoC的实现.assets/image-20261124204127876.png)
+
+## 19.5运行下面的测试测试，顺利通过，但是有一个坑，用户名不对！！！
+
+![image-20261124205947540](./note04-Spring对IoC的实现.assets/image-20261124205947540.png)
+
+### 那是因为中国username和操作系统的全局变量USERNAME重名，程序获取的是系统环境变量USERNAME的值
+
+## 19.6所以我们需要修改jdbc.properties的key，避免和系统环境变量冲突，最好在给key加一个限定jdbc.
+
+![image-20261124210300548](./note04-Spring对IoC的实现.assets/image-20261124210300548.png)
+
+## 19.7然后需要修改spring-properties.xml里面的相应的属性值
+
+![image-20261124210630148](./note04-Spring对IoC的实现.assets/image-20261124210630148.png)
+
+## 19.8再次运行测试代码，现在就可以得到正确的配置信息了
+
+![image-20261124210758288](./note04-Spring对IoC的实现.assets/image-20261124210758288.png)
+
+### 注意，这种功能是比较重要的

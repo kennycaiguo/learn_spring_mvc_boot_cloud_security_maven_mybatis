@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--根据名称自动装配，属性bean的id就是主类的属性名称-->
+    <bean id="serviceBean" class="org.kenny.spring.service.ClientService" autowire="byName" />
+    <bean id="clientDao" class="org.kenny.spring.dao.ClientDao" />
+    <!--根据类型自动装配，属性bean不需要id-->
+    <bean id="accServiceBean" class="org.kenny.spring.service.AccountService" autowire="byType" />
+    <bean class="org.kenny.spring.dao.AccountDao" />
+</beans>
