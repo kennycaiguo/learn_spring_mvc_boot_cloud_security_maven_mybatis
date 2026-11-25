@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <!--factory-method属性的使用-->
+       <bean id="starBean" class="org.kenny.spring.beancreate.StarFactory" factory-method="get" />
+       <!--factory-bean标签属性-->
+       <bean id="orderFactoryBean" class="org.kenny.spring.beancreate.OrderFactory" />
+       <!--提供factory-bean的引用，仍然需要通过factory-method-->
+       <bean id="orderBean" factory-bean="orderFactoryBean" factory-method="get"/>
+</beans>

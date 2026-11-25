@@ -45,6 +45,8 @@ public class TestSpringBean {
         BeanFactory factory=new ClassPathXmlApplicationContext("beans.xml");
         User user = factory.getBean("userBean", User.class); //在第二个参数里面指定需要的类的类型
         System.out.println(user);
+        User user1 = factory.getBean("userBean", User.class); //在第二个参数里面指定需要的类的类型
+        System.out.println(user1);
     }
     @Test
     public void test06() {

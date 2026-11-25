@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--将bean类对象的生命周期交给spring IoC容器管理-->
-    <bean id="userBean" class="org.kenny.spring.bean.User" />
+   <!--6bean对象默认是单例的，scope可以设置是否单例，默认值是singleton单例，改为prototype就是多例-->
+    <bean id="userBean" class="org.kenny.spring.bean.User"  scope="prototype"/>
 <!--    <bean id="vipBean" class="org.kenny.spring.bean.Vip" />-->
     <bean id="todayBean" class="java.util.Date" />
 </beans>

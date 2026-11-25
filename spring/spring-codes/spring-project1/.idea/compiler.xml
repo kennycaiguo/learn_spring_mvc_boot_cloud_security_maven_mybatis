@@ -6,7 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="factory-method" />
+        <module name="spring-003-bean-create" />
         <module name="spring-001-first" />
+        <module name="simple-factory" />
         <module name="spring-002-dependency-injection" />
       </profile>
     </annotationProcessing>
