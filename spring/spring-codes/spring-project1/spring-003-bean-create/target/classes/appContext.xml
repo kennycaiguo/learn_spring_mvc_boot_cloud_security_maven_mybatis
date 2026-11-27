@@ -5,8 +5,18 @@
 
        <!--factory-method属性的使用-->
        <bean id="starBean" class="org.kenny.spring.beancreate.StarFactory" factory-method="get" />
+
        <!--factory-bean标签属性-->
        <bean id="orderFactoryBean" class="org.kenny.spring.beancreate.OrderFactory" />
        <!--提供factory-bean的引用，仍然需要通过factory-method-->
        <bean id="orderBean" factory-bean="orderFactoryBean" factory-method="get"/>
+       <!--使用FactoryBean接口的实现类来实例化-->
+       <bean id="personBean" class="org.kenny.spring.beancreate.PersonFactoryBean" />
+       <!--使用自定义的FactoryBean来注入需要的日期格式-->
+       <bean id="dateBean" class="org.kenny.spring.beancreate.DateFactoryBean" >
+              <constructor-arg name="date" value="1999-10-11" />
+       </bean>
+       <bean id="studentBean" class="org.kenny.spring.beancreate.Student">
+              <property name="birth" ref="dateBean" />
+       </bean>
 </beans>

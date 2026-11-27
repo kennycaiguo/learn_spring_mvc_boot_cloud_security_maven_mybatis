@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--将bean类对象的生命周期交给spring IoC容器管理-->
+    <bean id="userBean" class="org.kenny.spring.bean.User" init-method="initBean" destroy-method="destroyBean">
+        <property name="name" value="Jack_ma" />
+    </bean>
+
+    <!--Bean后处理器，会作用于这个配置文件里面的所有bean,这个bean不需要id，因为是容器自动调用的-->
+    <bean class="org.kenny.spring.bean.LogBeanPostProcessor" />
+
+    <!--Client-->
+<!--    <bean id="clientBean" class="org.kenny.spring.bean.Client" init-method="initBean" destroy-method="destroyBean">-->
+<!--        <property name="name" value="Mary" />-->
+<!--    </bean>-->
+</beans>

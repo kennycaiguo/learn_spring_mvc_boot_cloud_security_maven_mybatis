@@ -8,13 +8,91 @@ Spring其实就是一个管理Bean对象的工厂。它负责对象的创建，�
 
 所谓的生命周期就是：对象从创建开始到最终销毁的整个过程。
 
-什么时候创建Bean对象？
+### 什么时候创建Bean对象？
 
-创建Bean对象的前后会调用什么方法？
+Spring 创建 Bean 对象的时机主要取决于 **作用域（Scope）** 和 **是否延迟加载（Lazy Init）**。 
 
-Bean对象什么时候销毁？
+1. 默认情况：容器启动阶段创建
 
-Bean对象的销毁前后调用什么方法？
+- **非懒加载的单例 Bean（`singleton` 且非 `@Lazy`）**：在 Spring 容器初始化/刷新（如 `AbstractApplicationContext#refresh()` 的 `finishBeanFactoryInitialization` 阶段）时，就会提前创建并完成初始化。
+- 这样做可以在启动时尽早暴露配置或依赖错误，减少运行时的首次请求延迟。 
+- 按需/使用时创建
+
+- **原型 Bean（`prototype`）**：容器启动时**不会**创建，每次通过 `getBean()` 获取或注入到其他 Bean 时，才会创建一个新的实例。
+- **懒加载的单例 Bean（`@Lazy` 或 `lazy-init="true"`）**：容器启动时**不会**创建，直到第一次被请求获取或被其他 Bean 依赖注入时才创建。
+- **Web 作用域 Bean（如 `request`、`session`）**：在对应的 Web 请求或会话生命周期开始并被访问时创建。
+- 底层创建过程（简述）
+
+当真正触发创建时，Spring 核心会在 `AbstractAutowireCapableBeanFactory#doCreateBean` 中依次执行：
+
+1. **实例化**：通过反射、构造器或工厂方法创建对象实例。
+2. **属性填充**：注入依赖的属性或 Bean。
+3. **初始化**：执行 Aware 接口回调、`@PostConstruct`、`InitializingBean` 或自定义 `init-method`。
+
+### 创建Bean对象的前后会调用什么方法？
+
+在 Spring 中（通常指 Bean 的创建与初始化过程），创建 Bean 对象前后会依次调用以下回调和生命周期方法：
+
+1. 实例化之前
+
+- **`InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation(...)`**：在真正 `new` 或反射创建实例前执行。若返回非 `null` 对象，可短路默认实例化流程，直接进入初始化后阶段。
+- 实例化之后、属性赋值之前
+
+- **构造方法 / `@Bean` 工厂方法**：生成原始 Bean 对象。
+- **`InstantiationAwareBeanPostProcessor.postProcessAfterInstantiation(...)`**：实例创建后、填充属性前调用，返回 `false` 可跳过后续属性注入。 
+- 属性填充与初始化之前
+
+- **依赖注入（字段 / Setter 方法）**：注入依赖与属性值。
+- **`InstantiationAwareBeanPostProcessor.postProcessProperties(...)`**：处理 `@Autowired`、`@Value`、`@Resource` 等注解注入。
+- **`Aware` 接口回调**：如 `BeanNameAware.setBeanName()`、`BeanClassLoaderAware.setBeanClassLoader()`、`BeanFactoryAware.setBeanFactory()`、`ApplicationContextAware.setApplicationContext()` 等。
+- **`BeanPostProcessor.postProcessBeforeInitialization(...)`**：在正式初始化方法执行前调用。 
+- 初始化阶段
+
+按先后顺序调用： 
+
+1. **`@PostConstruct` 标注的方法**
+2. **`InitializingBean.afterPropertiesSet()`**
+3. **自定义初始化方法**（如 `@Bean(initMethod = "...")` 或 XML 的 `init-method`） 
+4. 初始化之后
+
+- **`BeanPostProcessor.postProcessAfterInitialization(...)`**：初始化完成后调用，常用于创建 AOP 代理对象或做最终增强。 
+
+> 补充：容器关闭销毁 Bean 时，还会按 `@PreDestroy` -> `DisposableBean.destroy()` -> 自定义 `destroy-method` 的顺序调用销毁方法。 
+
+### Bean对象什么时候销毁？
+
+参考链接1：https://juejin.cn/post/7450409016708186164
+
+参考链接2：https://developer.aliyun.com/article/1372227
+
+在 Spring 中，Bean 的销毁时机主要取决于它的**作用域（Scope）**以及 **Spring 容器的状态**：
+
+- **单例 Bean（`singleton`，默认）**：在 **Spring 容器正常关闭时**触发销毁。容器会先调用销毁逻辑清理资源，随后对象等待 JVM 垃圾回收（GC）。
+- **原型 Bean（`prototype`）**：**Spring 容器不会执行销毁方法**。实例创建并交给调用方后，Spring 不再追踪其生命周期，对象不再被引用时由 JVM GC 回收。 
+- **其他作用域（如 Web 场景的 `request`、`session`）**：通常在对应的请求结束或会话失效/销毁时被回收。
+
+常见定义销毁逻辑的方式（按执行顺序）：
+
+1. `@PreDestroy` 注解方法
+2. 实现 `DisposableBean` 接口的 `destroy()` 方法
+3. 自定义销毁方法（如 `@Bean(destroyMethod = "...")` 或 XML 的 `destroy-method`
+
+### Bean对象的销毁前后调用什么方法？
+
+参考链接：https://www.cnblogs.com/krock/p/14847741.html
+
+在 Spring 中，Bean 对象的销毁阶段**主要在销毁前调用回调方法**，用于在释放资源前执行清理逻辑。
+
+销毁前调用的方法（按常见执行顺序）
+
+1. **`@PreDestroy` 注解方法**：标记在方法上，Bean 被容器移除/销毁前执行。
+2. **`DisposableBean.destroy()`**：实现 `DisposableBean` 接口并重写 `destroy()` 方法，在销毁前调用。
+3. **自定义 `destroy-method`（或 `@Bean(destroyMethod = "...")`）**：在 XML 配置或 `@Bean` 注解中指定的自定义销毁方法。
+
+销毁后与注意事项
+
+- **销毁后**：Bean 对象被销毁后，通常不再调用业务层面的回调方法，而是由 JVM 垃圾回收器回收对象内存。
+- **触发条件**：只有**正常关闭 Spring 容器**（如调用 `close()` 或注册关闭钩子 `registerShutdownHook()`）时，单例 Bean 的销毁方法才会被调用；`prototype`（原型）作用域的 Bean 销毁通常不由容器完整托管。
 
 ## 为什么要知道Bean的生命周期
 
@@ -28,6 +106,8 @@ Bean对象的销毁前后调用什么方法？
 
 任何一个生命周期都是基于回调机制的。（提前写好回调函数，到了这个时刻就会调用对应的回调函数。）
 
+## Bean的生命周期可以有5步，7步，10步之说，其中7b是说法比较重要，需要好好掌握
+
 ## Bean的生命周期之5步
 
 Bean生命周期的管理，可以参考Spring的源码：**<font style="color:#F5222D;">AbstractAutowireCapableBeanFactory类的doCreateBean()方法</font>\*\*\*\*。**
@@ -36,9 +116,9 @@ Bean生命周期可以粗略的划分为五大步：
 
 * 第一步：实例化Bean
 * 第二步：Bean属性赋值
-* 第三步：初始化Bean
+* 第三步：初始化Bean，调用我们写的init方法，如果没有这个方法，这一步没有效果，这个init方法的执行时机是当对象创建了，并且所有属性都赋值成功之后。也就是说此时对象以及实例化并且所有的属性都有值了。在bean的scope为singleton时，多次获取bean也只会执行一次，但是当scope为prototype时，这个方法每创建一次对象，都会执行一次。获取同一个对象，就只执行一次。
 * 第四步：使用Bean
-* 第五步：销毁Bean
+* 第五步：销毁Bean，这个方法也是执行一次
 
 ![1665388735200-444405f6-283d-4b3a-8cdf-8c3e01743618.png](./note08-Bean的生命周期.assets/1665388735200-444405f6-283d-4b3a-8cdf-8c3e01743618-629158.png)
 
@@ -106,6 +186,69 @@ public class BeanLifecycleTest {
 * 第二：ClassPathXmlApplicationContext类才有close()方法。
 * 第三：配置文件中的init-method指定初始化方法。destroy-method指定销毁方法。
 
+## 演练1.bean生命周期的5步说法示例
+
+### 1.1把001项目复制一份改名spring-004-bean-lifecycle，删除target文件夹和修改项目名称，然后在idea中把它添加为maven项目，把Vip类删除，把bean.xml改名appContext.xml,User类的代码如下，
+
+#### User.java
+
+```
+package org.kenny.spring.bean;
+
+public class User {
+
+        private String name;
+
+        public User() {
+            System.out.println("1.实例化Bean");
+        }
+
+        public void setName(String name) {
+            this.name = name;
+            System.out.println("2.Bean属性赋值");
+        }
+
+        public void initBean(){
+            System.out.println("3.初始化Bean");
+        }
+
+        public void destroyBean(){
+            System.out.println("5.销毁Bean");
+        }
+
+    @Override
+    public String toString() {
+        System.out.println("4.使用Bean");
+        return "User{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+}
+
+```
+
+### 注意：由于Java的类是没有析构函数的，所以最后一步很难测试。解决办法就是使用ClassPathXmlApplicationContext对象来替代ApplicationContext，因为后者没有close方法
+
+### 1.2然后我们在appContext.xml中配置User的bean，注意为了测试第二步，你需要给属性赋值
+
+![image-20261126132658700](./note08-Bean的生命周期.assets/image-20261126132658700.png)
+
+### 1.3测试效果如下
+
+![image-20261126134528303](./note08-Bean的生命周期.assets/image-20261126134528303.png)
+
+### 注意：默认spring创建的bean是单例的，所以你多次获取bean，你会发现，这几个步骤只有步骤4执行了多次。
+
+![image-20261126142234398](./note08-Bean的生命周期.assets/image-20261126142234398.png)
+
+### 如果你把它的scope改为prototype
+
+![image-20261126142415707](./note08-Bean的生命周期.assets/image-20261126142415707.png)
+
+### 运行测试代码，你会发现处理步骤5之外，其他方法都执行了2次，在这种情况下，spring容器不管理对象的销毁，所以步骤5不会执行。
+
+![image-20261126143205117](./note08-Bean的生命周期.assets/image-20261126143205117.png)
+
 ## Bean生命周期之7步
 
 在以上的5步中，第3步是初始化Bean，如果你还想在初始化前和初始化后添加代码，可以加入“Bean后处理器”。
@@ -145,6 +288,34 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
 如果加上Bean后处理器的话，Bean的生命周期就是7步了：
 
 ![1665393936765-0ea5dcdd-859a-4ac5-9407-f06022c498b9.png](./note08-Bean的生命周期.assets/1665393936765-0ea5dcdd-859a-4ac5-9407-f06022c498b9-478421.png)
+
+## 演练2.bean生命周期的7步说法示例
+
+### 2.1还是上面的004项目，我们新建一个LogBeanPostProcessor类实现BeanPostProcessor接口
+
+![image-20261126150355746](./note08-Bean的生命周期.assets/image-20261126150355746.png)
+
+### 2.2.在appContext.xml在给这个类配置一个bean，注意，它不需要id
+
+![image-20261126150937058](./note08-Bean的生命周期.assets/image-20261126150937058.png)
+
+### 2.3.运行上一节课的测试代码，效果如下
+
+![image-20261126151030079](./note08-Bean的生命周期.assets/image-20261126151030079.png)
+
+### 2.4.我们新建一个Client类
+
+![image-20261126151447193](./note08-Bean的生命周期.assets/image-20261126151447193.png)
+
+### 2.5在appContext.xml里面给它配置一个bean
+
+![image-20261126152204787](./note08-Bean的生命周期.assets/image-20261126152204787.png)
+
+### 2.6我们写一个测试代码来获取clientBean对象，发现userBean对象也创建了，并且执行了一些方法和Bean后处理器类的2个方法
+
+![image-20261126152525588](./note08-Bean的生命周期.assets/image-20261126152525588.png)
+
+
 
 ## Bean生命周期之10步
 
@@ -359,6 +530,92 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 
 <font style="color:#000000;"></font>
 
+## 演练3.bean生命周期的10步说法示例
+
+### 3.1让我们的User类实现BeanNameAware, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, DisposableBean这些接口，
+
+![image-20261126163253182](./note08-Bean的生命周期.assets/image-20261126163253182.png)
+
+### 代码如下
+
+```
+package org.kenny.spring.bean;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.*;
+
+public class User implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, DisposableBean {
+    private String name;
+
+    public User() {
+        System.out.println("1.实例化Bean");
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        System.out.println("2.Bean属性赋值");
+    }
+
+    public void initBean(){
+        System.out.println("3.初始化Bean");
+    }
+
+    public void destroyBean(){
+        System.out.println("5.销毁Bean");
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("类加载器：" + classLoader);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        System.out.println("Bean工厂：" + beanFactory);
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("bean名字：" + name);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("DisposableBean destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("afterPropertiesSet执行");
+    }
+
+    @Override
+    public String toString() {
+        System.out.println("4.使用bean");
+        return "User{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+}
+
+```
+
+### 3.2为了不干扰我们的效果，我们在appContext.xml中把clientBean的创建代码注释了
+
+![image-20261126163442098](./note08-Bean的生命周期.assets/image-20261126163442098.png)
+
+### 3.3运行测试程序1，效果如下，大体上还是5个步骤
+
+![image-20261126163627577](./note08-Bean的生命周期.assets/image-20261126163627577.png)
+
+
+
+
+
+
+
+
+
 ## Bean的作用域不同，管理方式不同
 
 Spring 根据Bean的作用域来选择管理方式。
@@ -422,4 +679,15 @@ public class RegisterBeanTest {
 
 ![1763780413264-6a23ba14-d5ea-493f-a3da-1c458c62ecbb.png](./note08-Bean的生命周期.assets/1763780413264-6a23ba14-d5ea-493f-a3da-1c458c62ecbb-244682.png)
 
-# 
+## 演练4.自己创建的对象交给spring管理
+
+## 4.1新建有空Vip类
+
+![image-20261126175427727](./note08-Bean的生命周期.assets/image-20261126175427727.png)
+
+### 4.2 在测试代码里面使用DefaultListableBeanFactory来注册和获取bean，效果如下
+
+![image-20261126180123923](./note08-Bean的生命周期.assets/image-20261126180123923.png)
+
+### 注意：不需要在配置文件里面配置任何东西
+

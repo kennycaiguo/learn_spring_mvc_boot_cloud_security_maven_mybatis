@@ -9,6 +9,8 @@
         <option value="$PROJECT_DIR$/simple-factory/pom.xml" />
         <option value="$PROJECT_DIR$/factory-method/pom.xml" />
         <option value="$PROJECT_DIR$/spring-003-bean-create/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-004-bean-lifecycle/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-006-annotation/pom.xml" />
       </list>
     </option>
   </component>

@@ -263,6 +263,28 @@ public void testFactoryBean(){
 
 **<font style="color:#E8323C;"></font>**
 
+## 演练3.通过BeanFactory接口实例化bean
+
+### 3.1新建一个person类，空的
+
+![image-20261126094346601](./note07-Bean的实例化方式.assets/image-20261126094346601.png)
+
+### 3.2编写一个类PersonFactoryBean实现FactoryBean接口，注意：这个接口是可以配置作用域的。
+
+![image-20261126094710313](./note07-Bean的实例化方式.assets/image-20261126094710313.png)
+
+### 3.3在appContext.xml中配置Person类的bean，注意：class使用PersonFactoryBean类
+
+![image-20261126095155188](./note07-Bean的实例化方式.assets/image-20261126095155188.png)
+
+### 3.4测试效果如下
+
+![image-20261126095434157](./note07-Bean的实例化方式.assets/image-20261126095434157.png)
+
+### 注意：也可以使用内部bean的形式
+
+![image-20261126124105429](./note07-Bean的实例化方式.assets/image-20261126124105429.png)
+
 ## BeanFactory和FactoryBean的区别
 
 ### BeanFactory
@@ -378,4 +400,34 @@ public class DateFactoryBean implements FactoryBean<Date> {
 
 ![1763779706597-06ce0ec2-17e5-4c8e-9e04-da407da067cc.png](./note07-Bean的实例化方式.assets/1763779706597-06ce0ec2-17e5-4c8e-9e04-da407da067cc-034086.png)
 
-# 
+## 演练4.注入自定义Date
+
+### 4.0默认情况下，日期的输入格式比较丑，而且不能随便更改格式
+
+![image-20261126095959837](./note07-Bean的实例化方式.assets/image-20261126095959837.png)
+
+### 此时是正常工作的
+
+![image-20261126100056929](./note07-Bean的实例化方式.assets/image-20261126100056929.png)
+
+### 修改一下格式就会报错
+
+![image-20261126100149416](./note07-Bean的实例化方式.assets/image-20261126100149416.png)
+
+### 下面，我们就来实现自定义日期格式的注入
+
+#### 4.1新建这个Student类
+
+![image-20261126100400656](./note07-Bean的实例化方式.assets/image-20261126100400656.png)
+
+#### 4.2此时我们就需要用到FactoryBean接口了，编写DateFactoryBean实现FactoryBean接口
+
+![image-20261126101551231](./note07-Bean的实例化方式.assets/image-20261126101551231.png)
+
+#### 4.3然后我们来配置这个bean
+
+![image-20261126111514472](./note07-Bean的实例化方式.assets/image-20261126111514472.png)
+
+#### 测试效果
+
+![image-20261126111604042](./note07-Bean的实例化方式.assets/image-20261126111604042.png)

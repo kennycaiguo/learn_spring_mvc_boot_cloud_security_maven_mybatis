@@ -11,5 +11,9 @@
     <file url="file://$PROJECT_DIR$/spring-002-dependency-injection/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-003-bean-create/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-003-bean-create/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-004-bean-lifecycle/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-004-bean-lifecycle/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-006-annotation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-006-annotation/src/main/resources" charset="UTF-8" />
   </component>
 </project>
