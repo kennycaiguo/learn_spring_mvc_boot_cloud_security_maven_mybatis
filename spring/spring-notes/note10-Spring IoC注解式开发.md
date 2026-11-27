@@ -1031,3 +1031,225 @@ public void testNoXml(){
 
 ## 注意：如果你的代码既要给前端使用，又要给后端使用，这时候就需要指定名字。其实指定名称是一个比较好的方式，可以避免bean的id冲突
 
+## 1.8假如我们有多个包需要扫描，比如我们新建另外一个新的类OrderController它在bean2包里面
+
+![image-20261127105556199](./note10-Spring IoC注解式开发.assets/image-20261127105556199.png)
+
+## 1.9此时你取获取OrderController的bean，程序会崩溃
+
+![image-20261127105818333](./note10-Spring IoC注解式开发.assets/image-20261127105818333.png)
+
+## 1.10此时我们需要在appContext.xml中这么配置
+
+![image-20261127105956250](./note10-Spring IoC注解式开发.assets/image-20261127105956250.png)
+
+## 1.11然后就可以顺利通过测试
+
+![image-20261127110039294](./note10-Spring IoC注解式开发.assets/image-20261127110039294.png)
+
+## 1.12当然，还有一种方式就是指定公共父包
+
+![image-20261127110431989](./note10-Spring IoC注解式开发.assets/image-20261127110431989.png)
+
+![image-20261127110504288](./note10-Spring IoC注解式开发.assets/image-20261127110504288.png)
+
+# 演练2.选择性实例化bean
+
+## 2.1新建一个bean3包，在里面新建一个SpringBean.java,在里面创建一些私有类，他们各有不同的注解
+
+![image-20261127115536800](./note10-Spring IoC注解式开发.assets/image-20261127115536800.png)
+
+## 2.2.我们新建一个appContext2.xml配置文件，做下面的配置
+
+![image-20261127115310684](./note10-Spring IoC注解式开发.assets/image-20261127115310684.png)
+
+## 2.3.测试一下，果然只有用Controller注解的类被实例化了
+
+![image-20261127115635133](./note10-Spring IoC注解式开发.assets/image-20261127115635133.png)
+
+## 2.4.当然，也可以把不需要实例化的注解排除
+
+![image-20261127115924656](./note10-Spring IoC注解式开发.assets/image-20261127115924656.png)
+
+# 演练3.用Value注解注入简单数据类型
+
+## 3.1新建一个bean4包，在里面新建一个User类，然后给它添加2个属性name和age然后分别用Value注解注入值，然后添加setter方法和toString方法
+
+![image-20261127121216781](./note10-Spring IoC注解式开发.assets/image-20261127121216781.png)
+
+## 3.2然后我们新建一个配置文件appContext3.xml，为了方便观察效果，位置只需要扫描bean4包
+
+![image-20261127121650952](./note10-Spring IoC注解式开发.assets/image-20261127121650952.png)
+
+## 3.3然后我们写一个测试方法，发现的确可以注入值
+
+![image-20261127121824544](./note10-Spring IoC注解式开发.assets/image-20261127121824544.png)
+
+## 3.4我们在setter方法里面添加语句输出语句，测试一下他们究竟有没有被执行
+
+![image-20261127122141300](./note10-Spring IoC注解式开发.assets/image-20261127122141300.png)
+
+## 3.5程序执行test04，我们发现它并没有调用setter方法
+
+![image-20261127122304846](./note10-Spring IoC注解式开发.assets/image-20261127122304846.png)
+
+## 3.6既然这样，我们把setter注释了。
+
+![image-20261127122357466](./note10-Spring IoC注解式开发.assets/image-20261127122357466.png)
+
+## 3.7发现它是可以正常运行的。
+
+![image-20261127122447242](./note10-Spring IoC注解式开发.assets/image-20261127122447242.png)
+
+## 3.8.其实这个Value注解也可以用在setter上。我们修改一下User类的代码
+
+![image-20261127122736792](./note10-Spring IoC注解式开发.assets/image-20261127122736792.png)
+
+## 3.9运行test04，发现顺利通过，此时setter方法被调用了
+
+![image-20261127122821486](./note10-Spring IoC注解式开发.assets/image-20261127122821486.png)
+
+### 所以，我们得到一个结论，如果Value注解直接放到属性上面，就不会调用setter方法。除非你显示的把Value注解放在setter方法上面，此时就会调用setter方法
+
+## 注意：
+
+### 1.Value注解不支持静态方法！！！
+
+### 2.如果把它Value添加到一个方法上面，它不必以set开头，任何方法名都可以
+
+### 3.如果你在属性上面添加了Value注解，设置一个值，在这个属性对应的set方法里面有添加有Value注解并且设置了一个不同的值，它会以set方法的值为准
+
+![image-20261127132001047](./note10-Spring IoC注解式开发.assets/image-20261127132001047.png)
+
+![image-20261127132044276](./note10-Spring IoC注解式开发.assets/image-20261127132044276.png)
+
+### 4.Value注解还可以用在构造函数的参数上面，我们把属性上面的注解和setter上面的Value注解统统注释了。然后我们添加一个构造函数，给参数添加Value注解并且设置值
+
+![image-20261127132821925](./note10-Spring IoC注解式开发.assets/image-20261127132821925.png)
+
+### 测试一下，也是可以正常运行的
+
+![image-20261127132917567](./note10-Spring IoC注解式开发.assets/image-20261127132917567.png)
+
+### 但是，Value注解不能加在构造方法上面！！！
+
+# 演练4.Autowired和Qualifier注解的使用
+
+## 首先有一点需要注意，就是Autowired注解默认只能够工具类型进行自动装配，如果你想它根据名称进行自动装配，还需要结合Qualifier注解来使用，也就是需要2个注解
+
+## 4.1我们使用bean包里面的类来进行测试，我们在UserService类里面的dao属性上面添加一个@Autowired注解，在UserController里面的service属性上面也添加一个@Autowired注解
+
+![image-20261127135032408](./note10-Spring IoC注解式开发.assets/image-20261127135032408.png)
+
+## 4.2为了方便查看结果，我们把appContext.xml复制一份，改名appContext4.xml，设置它只扫描bean包
+
+![image-20261127135156324](./note10-Spring IoC注解式开发.assets/image-20261127135156324.png)
+
+## 4.3然后我们写一个testAutowired方法，顺利通过测试
+
+![image-20261127135414059](./note10-Spring IoC注解式开发.assets/image-20261127135414059.png)
+
+### 可以看到，所有的属性都有值，它的确进行了自动装配
+
+## 4.4然后我们把属性上面的注解注释，把它添加到set方法里面
+
+![image-20261127140140728](./note10-Spring IoC注解式开发.assets/image-20261127140140728.png)
+
+## 4.5运行测试代码，也是没有问题的
+
+![image-20261127141611601](./note10-Spring IoC注解式开发.assets/image-20261127141611601.png)
+
+## 4.6然后我们把set方法和他的的注解注释了，把注解添加到构造函数里面。
+
+![image-20261127143209291](./note10-Spring IoC注解式开发.assets/image-20261127143209291.png)
+
+## 4.7也是可以正常通过测试的
+
+![image-20261127143324152](./note10-Spring IoC注解式开发.assets/image-20261127143324152.png)
+
+## 4.8把Autowired注解添加到构造方法的参数上面
+
+![image-20261127143634508](./note10-Spring IoC注解式开发.assets/image-20261127143634508.png)
+
+## 4.9发现程序还是能够正常运行的。
+
+![image-20261127143848523](./note10-Spring IoC注解式开发.assets/image-20261127143848523.png)
+
+## 4.10其实Autowired注解可以省略但是必须符合下面的要求，1.只有一个有参构造函数，在这个构造函数里面必须给属性赋值，不能有无参构造函数。2.没有提供setter。我们把UserController里面的所有Autowired的注解注释或者删除。
+
+![image-20261127144357115](./note10-Spring IoC注解式开发.assets/image-20261127144357115.png)
+
+## 4.11测试还是可以顺利通过的
+
+![image-20261127144454991](./note10-Spring IoC注解式开发.assets/image-20261127144454991.png)
+
+### 注意：默认spring框架创建bean是调用无参构造函数的，所以如果你通过了一个无参构造函数和一个有参数的构造函数，spring框架会使用无参构造函数，所以如果你想省略Autowired注解，你一定不能够通过无参构造函数
+
+# 演练5.Autowired注解配合Qualifier接口进行根据名称自动装配
+
+## 5.1需要修改一下代码，创建一个IUserDao接口，
+
+![image-20261127150055136](./note10-Spring IoC注解式开发.assets/image-20261127150055136.png)
+
+### 然后创建2给实现类来实现这个接口
+
+![image-20261127150553415](./note10-Spring IoC注解式开发.assets/image-20261127150553415.png)
+
+## 5.2然后我们来修改一下UserService的代码
+
+![image-20261127150811042](./note10-Spring IoC注解式开发.assets/image-20261127150811042.png)
+
+## 5.3此时运行测试会报错，因为这里找到2个系统类型的IUserDao实现类对象，spring不知道该使用哪一个
+
+![image-20261127151032010](./note10-Spring IoC注解式开发.assets/image-20261127151032010.png)
+
+## 5.4此时我们需要用Qualifier注解指定究竟你是使用哪一个实现类，比如这里我们使用用于Mysql的实现类，注意Qualifier注解不能添加在构造函数上面，所以我们需要改为setter方法，把构造函数注释了
+
+![image-20261127153046829](./note10-Spring IoC注解式开发.assets/image-20261127153046829.png)
+
+## 5.5运行测试，顺利通过
+
+![image-20261127153231863](./note10-Spring IoC注解式开发.assets/image-20261127153231863.png)
+
+# 演练6.Lombok库的使用，它可以帮我们生成setter，getter和构造方法
+
+## 6.1在项目的pom.xml里面引入Lombok
+
+![image-20261127154638902](./note10-Spring IoC注解式开发.assets/image-20261127154638902.png)
+
+## 6.2.创建一个Customer类，只提供属性，不通过getter、setter和构造函数
+
+![image-20261127154900449](./note10-Spring IoC注解式开发.assets/image-20261127154900449.png)
+
+## 6.3在这个Customer类上面添加一个@Data注解
+
+![image-20261127155104954](./note10-Spring IoC注解式开发.assets/image-20261127155104954.png)
+
+## 6.4然后我们可以测试一下Lombok，发现的确生成了setter方法因为可以正常给属性赋值，也能够获取得到
+
+![image-20261127155711881](./note10-Spring IoC注解式开发.assets/image-20261127155711881.png)
+
+## 6.5新建一个MyService类，在里面有一个UserDao类的属性在前面添加修饰符final，此时我们必须立即给它赋值或者在构造函数里面给它赋值，这里使用后者，还可以添加一个save方法在里面调用userDao的方法
+
+![image-20261127160452696](./note10-Spring IoC注解式开发.assets/image-20261127160452696.png)
+
+![image-20261127160959637](./note10-Spring IoC注解式开发.assets/image-20261127160959637.png)
+
+## 6.6测试一下，顺利通过
+
+![image-20261127161046440](./note10-Spring IoC注解式开发.assets/image-20261127161046440.png)
+
+## 6.7此时如果我们把带参构造函数注释了，就会报错，
+
+![image-20261127161312446](./note10-Spring IoC注解式开发.assets/image-20261127161312446.png)
+
+### 解决办法就是添加一个lombok的RequiredArgsConstructor注解
+
+![image-20261127161407469](./note10-Spring IoC注解式开发.assets/image-20261127161407469.png)
+
+## 6.8再次运行测试，顺利通过
+
+![image-20261127161529845](./note10-Spring IoC注解式开发.assets/image-20261127161529845.png)
+
+## 注意：Lombok的注入也是根据类型来注入的，如果同时存在多个相同类型的对象，就会报错，注入失败。
+
