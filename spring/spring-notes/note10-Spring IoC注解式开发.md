@@ -1253,3 +1253,66 @@ public void testNoXml(){
 
 ## 注意：Lombok的注入也是根据类型来注入的，如果同时存在多个相同类型的对象，就会报错，注入失败。
 
+# 演练7.利用Resource注解(注意是Jakarta的，不是spring的)
+
+## 注意：这个注解是按照名称注入的
+
+## 7.1.引入Resource注解依赖，注意它一般只能够在属性和方法上面使用，也不能用在构造函数里面。
+
+![image-20261127182022055](./note10-Spring IoC注解式开发.assets/image-20261127182022055.png)
+
+## 7.2.新建一个bean5包，在里面新建一个ClientDao接口，里面声明一个insert方法。然后创建一个ClientDaoImpl类实现这个接口，然后新建一个ClientService类里面有一个ClientDao类型的属性clientDao，service有一个save方法调用dao里面的insert方法，然后新建一个ClientController类，里面有一个ClientService的属性clientService，controller有一个saveClient方法调用service的save方法，都不写set方法。代码如下
+
+![image-20261127190736217](./note10-Spring IoC注解式开发.assets/image-20261127190736217.png)
+
+![image-20261127190043961](./note10-Spring IoC注解式开发.assets/image-20261127190043961.png)
+
+![image-20261127190102736](./note10-Spring IoC注解式开发.assets/image-20261127190102736.png)
+
+## 7.3此时我们来获取controller的bean是可以获取的，但是他的clientService属性是null，因为我们没有做任何注入
+
+![image-20261127190321683](./note10-Spring IoC注解式开发.assets/image-20261127190321683.png)
+
+## 7.4注意，此时你调用service的方法，程序立马崩溃
+
+![image-20261127190812834](./note10-Spring IoC注解式开发.assets/image-20261127190812834.png)
+
+## 7.5解决办法就是在service类里面的dao属性上面添加@Resource注解，在控制器类的service属性上面也添加@Resource注解
+
+![image-20261127192144308](./note10-Spring IoC注解式开发.assets/image-20261127192144308.png)
+
+![image-20261127192225504](./note10-Spring IoC注解式开发.assets/image-20261127192225504.png)
+
+## 7.6再次运行程序，顺利通过
+
+![image-20261127192521985](./note10-Spring IoC注解式开发.assets/image-20261127192521985.png)
+
+### 注意，Resource注解也支持给属性起名字，不过，他的参数是name而不是value，这个和生成bean的注解不一样，所以需要这么写
+
+![image-20261127193134659](./note10-Spring IoC注解式开发.assets/image-20261127193134659.png)
+
+# 演练8.spring全注解开发，（不需要配置文件）
+
+## 8.1把001项目复制一份，改名spring-007-no-xml,然后打开pom.xml文件修改项目名称，把target文件夹删除，然后在idea工具中添加为maven项目，因为这个项目不需要spring的配置文件，我们把spring修改的配置文件删除。把测试代码删除，只留下一个空函数
+
+![image-20261127200138061](./note10-Spring IoC注解式开发.assets/image-20261127200138061.png)
+
+## 8.2把bean包和它里面的类删除，在org.kenny.spring包里面新建一个SpringConfiguration类和一个service子包。在子包里面新建一个CustomerService类
+
+![image-20261127200615606](./note10-Spring IoC注解式开发.assets/image-20261127200615606.png)
+
+## 8.3给配置类添加一个@Configuration注解和同样ComponentScan注解，里面填写你需要扫描的包。注意此时我们没有在这个类里面写任何代码
+
+![image-20261127202437902](./note10-Spring IoC注解式开发.assets/image-20261127202437902.png)
+
+## 8.4然后我们编写一些测试代码，注意，此时不能再使用ClassPathApplicationContext类而是要使用AnnotationConfigApplicationContext来创建context对象，运行程序顺利获取到bean，也可以调用dao中的方法
+
+![image-20261127202754597](./note10-Spring IoC注解式开发.assets/image-20261127202754597.png)
+
+## 8.5可以自己new一个对象放到IoC容器，比如我们创建一个Date对象
+
+![image-20261127203912948](./note10-Spring IoC注解式开发.assets/image-20261127203912948.png)
+
+## 8.6然后我们在测试代码里面获取这个日期对象并且输出，是没有问题的
+
+![image-20261127204011282](./note10-Spring IoC注解式开发.assets/image-20261127204011282.png)

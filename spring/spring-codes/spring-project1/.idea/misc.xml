@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/spring-003-bean-create/pom.xml" />
         <option value="$PROJECT_DIR$/spring-004-bean-lifecycle/pom.xml" />
         <option value="$PROJECT_DIR$/spring-006-annotation/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-007-no-xml/pom.xml" />
       </list>
     </option>
   </component>

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.kenny.spring.bean.*;
 import org.kenny.spring.bean2.OrderController;
 import org.kenny.spring.bean4.User;
+import org.kenny.spring.bean5.ClientController;
+import org.kenny.spring.bean5.ClientService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -56,10 +58,18 @@ public class TestSpringBean {
         System.out.println(customer.getAge());
     }
     @Test
-    public void test06() {
+    public void test05() {
         ApplicationContext context=new ClassPathXmlApplicationContext("appContext4.xml");
         MyService myService = context.getBean("myService", MyService.class);
         System.out.println(myService);
         myService.save();
+    }
+
+    @Test
+    public void test06() {
+        ApplicationContext context=new ClassPathXmlApplicationContext("appContext5.xml");
+        ClientController controller = context.getBean("clientController", ClientController.class);
+        System.out.println(controller);
+        controller.saveClient();
     }
 }
